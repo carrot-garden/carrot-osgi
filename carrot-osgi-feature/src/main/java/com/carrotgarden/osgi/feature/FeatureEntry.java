@@ -2,12 +2,23 @@ package com.carrotgarden.osgi.feature;
 
 import java.util.Collection;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class FeatureEntry {
 
+	@JsonBackReference
+	private FeatureCollection parent;
+
+	@JsonProperty("name")
 	private String name;
 
+	@JsonProperty("version")
 	private String version;
 
+	@JsonManagedReference
+	@JsonProperty("bundles")
 	private Collection<FeatureBundle> bundles;
 
 	//
@@ -34,6 +45,14 @@ public class FeatureEntry {
 
 	public void setBundles(Collection<FeatureBundle> bundles) {
 		this.bundles = bundles;
+	}
+
+	public FeatureCollection getParent() {
+		return parent;
+	}
+
+	public void setParent(FeatureCollection parent) {
+		this.parent = parent;
 	}
 
 }

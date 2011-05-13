@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>carrot-osgi</artifactId>
 		<groupId>com.carrotgarden</groupId>
+		<artifactId>carrot-osgi</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>carrot-osgi-feature-pivot</artifactId>
+	<artifactId>carrot-osgi-feature-jackson</artifactId>
 	<packaging>bundle</packaging>
 
 	<dependencies>
@@ -22,7 +22,7 @@
 
 		<dependency>
 			<groupId>com.carrotgarden</groupId>
-			<artifactId>carrot-osgi-util-json</artifactId>
+			<artifactId>carrot-util-json</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 

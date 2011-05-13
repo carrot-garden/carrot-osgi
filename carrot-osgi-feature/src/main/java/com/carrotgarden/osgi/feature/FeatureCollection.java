@@ -2,10 +2,13 @@ package com.carrotgarden.osgi.feature;
 
 import java.util.Collection;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 public class FeatureCollection {
 
-	public static final String PROP_ENTRIES = "entries";
-
+	@JsonProperty("entries")
+	@JsonManagedReference
 	private Collection<FeatureEntry> entries;
 
 	//

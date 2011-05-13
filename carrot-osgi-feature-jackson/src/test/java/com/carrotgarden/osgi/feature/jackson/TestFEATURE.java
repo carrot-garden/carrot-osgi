@@ -1,6 +1,6 @@
-package com.carrotgarden.osgi.feature.pivot;
+package com.carrotgarden.osgi.feature.jackson;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.net.URL;
 
@@ -36,6 +36,8 @@ public class TestFEATURE {
 		String json = FEATURE.encode(result);
 
 		log.info("json : {}", json);
+
+		assertTrue(true);
 
 	}
 
