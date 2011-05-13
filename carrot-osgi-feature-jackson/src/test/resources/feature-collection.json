@@ -1,18 +1,50 @@
 {
-    "entries" : [
+    "features" : [
         {
-            "name" : "name-1",
-            "version" : "1.2.3",
+            "name" : "osgi-core",
+            "version" : "1.0.0",
             "bundles" : [
                 {
-                    "location" : "",
-                    "start-level" : ""
+                    "location" : "http://apache.cs.utah.edu//felix/org.apache.felix.configadmin-1.2.8.jar",
+                    "startLevel" : "10"
+                },
+                {
+                    "location" : "http://apache.cs.utah.edu//felix/org.apache.felix.eventadmin-1.2.10.jar",
+                    "startLevel" : "10"
+                },
+                {
+                    "location" : "http://apache.cs.utah.edu//felix/org.apache.felix.scr-1.6.0.jar",
+                    "startLevel" : "10"
                 }
             ]
         },
         {
-            "name" : "name-2",
-            "version" : "2.3.4"
+            "name" : "osgi-console",
+            "version" : "1.0.0",
+            "bundles" : [
+                {
+                    "location" : "http://apache.cs.utah.edu//felix/org.apache.felix.gogo.runtime-0.8.0.jar",
+                    "startLevel" : "20"
+                },
+                {
+                    "location" : "http://apache.cs.utah.edu//felix/org.apache.felix.gogo.shell-0.8.0.jar",
+                    "startLevel" : "20"
+                },
+                {
+                    "location" : "http://apache.cs.utah.edu//felix/org.apache.felix.gogo.command-0.8.0.jar",
+                    "startLevel" : "20"
+                }
+            ]
+        },
+        {
+            "name" : "app-core",
+            "version" : "2.3.4",
+            "bundles" : [
+                {
+                    "location" : "reference:file:../carrot-test-osgi-pivot-core/target/classes",
+                    "startLevel" : "110"
+                }
+            ]
         }
     ]
 }

@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.feature.FeatureCollection;
+import com.carrotgarden.osgi.feature.FeatureEntry;
+import com.carrotgarden.utils.json.JSON;
 
 public class TestFEATURE {
 
@@ -36,6 +38,21 @@ public class TestFEATURE {
 		String json = FEATURE.encode(result);
 
 		log.info("json : {}", json);
+
+		assertTrue(true);
+
+	}
+
+	@Test
+	public void testFind() {
+
+		URL jsonURL = getClass().getResource("/feature-collection.json");
+
+		FeatureCollection result = FEATURE.decode(jsonURL);
+
+		FeatureEntry feature = result.findFeatureByName("osgi-core");
+
+		log.info("json : {}", JSON.intoText(feature));
 
 		assertTrue(true);
 

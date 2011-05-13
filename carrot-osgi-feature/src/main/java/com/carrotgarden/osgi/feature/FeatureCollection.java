@@ -7,18 +7,34 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class FeatureCollection {
 
-	@JsonProperty("entries")
+	@JsonProperty("features")
 	@JsonManagedReference
-	private Collection<FeatureEntry> entries;
+	private Collection<FeatureEntry> features;
 
 	//
 
-	public Collection<FeatureEntry> getEntries() {
-		return entries;
+	public Collection<FeatureEntry> getFeatures() {
+		return features;
 	}
 
-	public void setEntries(Collection<FeatureEntry> entries) {
-		this.entries = entries;
+	public void setFeatures(Collection<FeatureEntry> entries) {
+		this.features = entries;
+	}
+
+	public FeatureEntry findFeatureByName(String name) {
+
+		if (features == null || name == null) {
+			return null;
+		}
+
+		for (FeatureEntry entry : features) {
+			if (name.equals(entry.getName())) {
+				return entry;
+			}
+		}
+
+		return null;
+
 	}
 
 }
