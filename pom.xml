@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.carrotgarden</groupId>
+		<artifactId>carrot-archon</artifactId>
+		<version>1.0.20-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>carrot-osgi</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<pivotVersion>2.1.0-SNAPSHOT</pivotVersion>
+	</properties>
+
+	<dependencyManagement>
+
+		<dependencies>
+
+			<dependency>
+				<groupId>com.carrotgarden</groupId>
+				<artifactId>pivot-core</artifactId>
+				<version>${pivotVersion}</version>
+			</dependency>
+
+		</dependencies>
+
+	</dependencyManagement>
+
+	<modules>
+		<module>carrot-osgi-feature</module>
+		<module>carrot-osgi-feature-pivot</module>
+	</modules>
+
+</project>
