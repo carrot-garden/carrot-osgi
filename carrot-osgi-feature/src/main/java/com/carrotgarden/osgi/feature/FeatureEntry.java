@@ -9,7 +9,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class FeatureEntry {
 
 	@JsonBackReference
-	private FeatureCollection parent;
+	private FeatureRepository parent;
 
 	@JsonProperty("name")
 	private String name;
@@ -47,11 +47,11 @@ public class FeatureEntry {
 		this.bundles = bundles;
 	}
 
-	public FeatureCollection getParent() {
+	public FeatureRepository getParent() {
 		return parent;
 	}
 
-	public void setParent(FeatureCollection parent) {
+	public void setParent(FeatureRepository parent) {
 		this.parent = parent;
 	}
 

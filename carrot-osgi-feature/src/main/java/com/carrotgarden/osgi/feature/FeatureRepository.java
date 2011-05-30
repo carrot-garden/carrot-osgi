@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class FeatureCollection {
+public class FeatureRepository {
 
 	@JsonProperty("features")
 	@JsonManagedReference

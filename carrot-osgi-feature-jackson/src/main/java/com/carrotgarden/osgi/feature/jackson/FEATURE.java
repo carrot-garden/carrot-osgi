@@ -5,18 +5,18 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.carrotgarden.osgi.feature.FeatureCollection;
+import com.carrotgarden.osgi.feature.FeatureRepository;
 import com.carrotgarden.utils.json.JSON;
 
 public class FEATURE {
 
 	private static final Logger log = LoggerFactory.getLogger(FEATURE.class);
 
-	public static FeatureCollection decode(URL jsonURL) {
+	public static FeatureRepository decode(URL jsonURL) {
 
 		try {
 
-			return JSON.fromURL(jsonURL, FeatureCollection.class);
+			return JSON.fromURL(jsonURL, FeatureRepository.class);
 
 		} catch (Exception e) {
 			log.error("", e);
@@ -26,7 +26,7 @@ public class FEATURE {
 
 	}
 
-	public static String encode(FeatureCollection instance) {
+	public static String encode(FeatureRepository instance) {
 
 		return JSON.intoText(instance);
 

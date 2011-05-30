@@ -8,13 +8,13 @@ import org.apache.pivot.json.JSONSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.carrotgarden.osgi.feature.FeatureCollection;
+import com.carrotgarden.osgi.feature.FeatureRepository;
 
 public class FEATURE {
 
 	private static final Logger log = LoggerFactory.getLogger(FEATURE.class);
 
-	public static FeatureCollection decode(URL jsonURL) {
+	public static FeatureRepository decode(URL jsonURL) {
 
 		try {
 
@@ -26,7 +26,7 @@ public class FEATURE {
 
 			log.info("map : {}", map);
 
-			FeatureCollection result = new FeatureCollection();
+			FeatureRepository result = new FeatureRepository();
 
 			return result;
 
@@ -38,7 +38,7 @@ public class FEATURE {
 
 	}
 
-	public static String encode(FeatureCollection instance) {
+	public static String encode(FeatureRepository instance) {
 
 		// JSONSerializer codec = new JSONSerializer();
 		// codec.setAlwaysDelimitMapKeys(true);
