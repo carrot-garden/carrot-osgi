@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.feature.FeatureRepository;
-import com.carrotgarden.utils.json.JSON;
+import com.carrotgarden.util.json.JSON;
 
 public class FEATURE {
 
