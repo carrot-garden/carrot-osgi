@@ -17,4 +17,29 @@ public class ServiceBean {
 	@XStreamImplicit(itemFieldName = "provide")
 	public List<ProvideBean> provideList = new LinkedList<ProvideBean>();
 
+	//
+
+	public void apply(final Class<?> klaz) {
+
+		final Class<?>[] ifaceArray = klaz.getInterfaces();
+
+		if (ifaceArray.length == 0) {
+			return;
+		}
+
+		for (final Class<?> iface : ifaceArray) {
+
+			final ProvideBean bean = new ProvideBean();
+			bean.klaz = iface.getName();
+
+			if (provideList.contains(bean)) {
+				continue;
+			}
+
+			provideList.add(bean);
+
+		}
+
+	}
+
 }

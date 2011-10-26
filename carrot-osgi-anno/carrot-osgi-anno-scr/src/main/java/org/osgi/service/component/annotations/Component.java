@@ -5,23 +5,23 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(value = RetentionPolicy.CLASS)
+@Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.TYPE)
 public @interface Component {
 
 	String name() default "";
 
-	Class<?>[] service() default {};
+	boolean enabled() default true;
+
+	boolean immediate() default false;
 
 	String factory() default "";
 
 	boolean servicefactory() default false;
 
-	boolean enabled() default true;
-
-	boolean immediate() default false;
-
 	ConfigurationPolicy configurationPolicy() default ConfigurationPolicy.OPTIONAL;
+
+	Class<?>[] service() default {};
 
 	String[] property() default {};
 
