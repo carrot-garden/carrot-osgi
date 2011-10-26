@@ -59,7 +59,7 @@ public class ReferenceBean {
 	//
 
 	public void apply(final Class<?> klaz, final Method bindMethod,
-			final Reference anno) {
+			final Reference reference) {
 
 		final String bindName = bindMethod.getName();
 
@@ -69,13 +69,13 @@ public class ReferenceBean {
 
 		type = bindType.getName();
 
-		target = Util.isValid(anno.target()) ? anno.target() : null;
+		target = Util.isValid(reference.target()) ? reference.target() : null;
 
-		name = Util.isValid(anno.name()) ? anno.name() : type + "/" + target;
+		name = Util.isValid(reference.name()) ? reference.name() : type + "/" + target;
 
-		cardinality = anno.cardinality();
+		cardinality = reference.cardinality();
 
-		policy = anno.policy();
+		policy = reference.policy();
 
 		bind = bindName;
 

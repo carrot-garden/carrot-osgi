@@ -2,12 +2,17 @@ package com.carrotgarden.osgi.anno.scr.bean;
 
 import java.lang.reflect.Method;
 
+import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 class Util {
 
 	static boolean isValid(final String text) {
 		return text != null && text.length() > 0;
+	}
+
+	static boolean hasComponent(final Class<?> klaz) {
+		return klaz.isAnnotationPresent(Component.class);
 	}
 
 	static boolean hasInterfaces(final Class<?> klaz) {

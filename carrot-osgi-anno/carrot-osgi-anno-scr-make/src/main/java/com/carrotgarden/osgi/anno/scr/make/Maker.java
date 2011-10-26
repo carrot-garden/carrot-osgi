@@ -24,7 +24,7 @@ public class Maker {
 
 	}
 
-	public static boolean isAnnotationPresent(final Class<?> klaz) {
+	static boolean isAnnotationPresent(final Class<?> klaz) {
 
 		if (klaz == null) {
 			return false;
@@ -38,7 +38,7 @@ public class Maker {
 
 	}
 
-	public static List<Class<?>> getClassList(final Class<?> klaz) {
+	static List<Class<?>> getClassList(final Class<?> klaz) {
 
 		final List<Class<?>> list = new LinkedList<Class<?>>();
 
@@ -58,7 +58,7 @@ public class Maker {
 
 	}
 
-	public static ComponentBean makeBean(final Class<?> klaz) {
+	static ComponentBean makeBean(final Class<?> klaz) {
 
 		final ComponentBean bean = new ComponentBean();
 
@@ -77,6 +77,10 @@ public class Maker {
 	public String make(final Class<?> klaz) {
 
 		if (isAnnotationPresent(klaz)) {
+
+			final ComponentBean bean = makeBean(klaz);
+
+			return xstream.toXML(bean);
 
 		}
 

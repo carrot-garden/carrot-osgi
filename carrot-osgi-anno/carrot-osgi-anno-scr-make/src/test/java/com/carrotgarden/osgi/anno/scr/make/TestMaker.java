@@ -11,9 +11,6 @@ import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.carrotgarden.osgi.anno.scr.bean.ComponentBean;
-import com.thoughtworks.xstream.XStream;
-
 public class TestMaker {
 
 	static final Logger log = LoggerFactory.getLogger(TestMaker.class);
@@ -45,13 +42,9 @@ public class TestMaker {
 	@Test
 	public void test2() {
 
-		final XStream xstream = new XStream();
+		final Maker maker = new Maker();
 
-		xstream.autodetectAnnotations(true);
-
-		final ComponentBean bean = Maker.makeBean(Comp1.class);
-
-		log.debug("bean : \n{}", xstream.toXML(bean));
+		log.debug("bean : \n{}", maker.make(Comp1.class));
 
 	}
 
