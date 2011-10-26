@@ -43,16 +43,6 @@ class Util {
 		return true;
 	}
 
-	static String fieldName(String text) {
-
-		text = text.replaceFirst("add", "");
-		text = text.replaceFirst("set", "");
-		text = text.replaceFirst("bind", "");
-
-		return text;
-
-	}
-
 	static Class<?> bindType(final Method bindMethod) {
 
 		final Class<?>[] paramArary = bindMethod.getParameterTypes();
@@ -63,21 +53,11 @@ class Util {
 
 	static String unbindName(final String bindName) {
 
-		final String name = fieldName(bindName);
-
 		if (bindName.startsWith("add")) {
-			return "remove" + name;
+			return "remove" + bindName.replaceFirst("add", "");
 		}
 
-		if (bindName.startsWith("set")) {
-			return "unset" + name;
-		}
-
-		if (bindName.startsWith("bind")) {
-			return "unbind" + name;
-		}
-
-		return "un" + name;
+		return "un" + bindName;
 
 	}
 
