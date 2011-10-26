@@ -35,6 +35,7 @@
 		<module>carrot-osgi-feature</module>
 		<module>carrot-osgi-feature-jackson</module>
 		<module>carrot-osgi-feature-pivot</module>
+		<module>carrot-osgi-anno</module>
 	</modules>
 
 </project>
