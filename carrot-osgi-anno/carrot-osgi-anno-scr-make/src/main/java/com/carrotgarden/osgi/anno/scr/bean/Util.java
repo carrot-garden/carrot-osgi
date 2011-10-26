@@ -25,7 +25,93 @@ class Util {
 	}
 
 	static boolean isValid(final Class<?>[] paramArray) {
-		return paramArray != null && paramArray.length == 1;
+
+		if (paramArray == null) {
+			return false;
+		}
+
+		if (paramArray.length != 1) {
+			return false;
+		}
+
+		final Class<?> type = paramArray[0];
+
+		if (!type.isInterface()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	static String fieldName(String text) {
+
+		text = text.replaceFirst("add", "");
+		text = text.replaceFirst("set", "");
+		text = text.replaceFirst("bind", "");
+
+		return text;
+
+	}
+
+	static Class<?> bindType(final Method bindMethod) {
+
+		final Class<?>[] paramArary = bindMethod.getParameterTypes();
+
+		return paramArary[0];
+
+	}
+
+	static String unbindName(final String bindName) {
+
+		final String name = fieldName(bindName);
+
+		if (bindName.startsWith("add")) {
+			return "remove" + name;
+		}
+
+		if (bindName.startsWith("set")) {
+			return "unset" + name;
+		}
+
+		if (bindName.startsWith("bind")) {
+			return "unbind" + name;
+		}
+
+		return "un" + name;
+
+	}
+
+	static void assertBindUnbind(final Class<?> klaz, final Class<?> type,
+			final String bindName, final String unbindName) {
+
+		final Method[] methodArray = klaz.getDeclaredMethods();
+
+		int bindCount = 0;
+		int unbindCount = 0;
+
+		for (final Method method : methodArray) {
+
+			final Class<?>[] paramArray = method.getParameterTypes();
+
+			if (method.getName().equals(bindName) && paramArray.length == 1
+					&& paramArray[0] == type) {
+				bindCount++;
+			}
+
+			if (method.getName().equals(unbindName) && paramArray.length == 1
+					&& paramArray[0] == type) {
+				unbindCount++;
+			}
+
+		}
+
+		if (bindCount == 1 && unbindCount == 1) {
+			return;
+		}
+
+		throw new RuntimeException("mismatch : " + " bind=" + bindName
+				+ " unbind=" + unbindName);
+
 	}
 
 }

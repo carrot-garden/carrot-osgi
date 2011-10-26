@@ -47,34 +47,43 @@ public class ReferenceBean {
 
 	//
 
-	public void apply(final Reference anno, final Method method) {
+	@Override
+	public boolean equals(final Object other) {
+		if (other instanceof ReferenceBean) {
+			final ReferenceBean that = (ReferenceBean) other;
+			return this.name.equals(that.name);
+		}
+		return false;
+	}
 
-		final String bindName = method.getName();
+	//
 
-		final String unbindName = "un" + bindName;
+	public void apply(final Class<?> klaz, final Method bindMethod,
+			final Reference anno) {
 
-		String temp = bindName;
-		temp = temp.replaceFirst("add", "");
-		temp = temp.replaceFirst("set", "");
-		temp = temp.replaceFirst("bind", "");
+		final String bindName = bindMethod.getName();
+
+		final Class<?> bindType = Util.bindType(bindMethod);
 
 		//
 
-		name = Util.isValid(anno.name()) ? anno.name() : temp;
+		type = bindType.getName();
 
-		final Class<?>[] paramArary = method.getParameterTypes();
+		target = Util.isValid(anno.target()) ? anno.target() : null;
 
-		type = paramArary[0].getName();
+		name = Util.isValid(anno.name()) ? anno.name() : type + "/" + target;
 
 		cardinality = anno.cardinality();
 
 		policy = anno.policy();
 
-		target = Util.isValid(anno.target()) ? anno.target() : null;
-
 		bind = bindName;
 
-		unbind = unbindName;
+		unbind = Util.unbindName(bindName);
+
+		//
+
+		Util.assertBindUnbind(klaz, bindType, bind, unbind);
 
 	}
 

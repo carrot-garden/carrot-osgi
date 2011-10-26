@@ -101,8 +101,6 @@ public class ComponentBean {
 
 			loadImplementation().klaz = klaz.getName();
 
-			//
-
 			loadService().servicefactory = component.servicefactory();
 
 		}
@@ -126,12 +124,17 @@ public class ComponentBean {
 				final Class<?>[] paramArray = method.getParameterTypes();
 
 				if (!Util.isValid(paramArray)) {
-					throw new RuntimeException("invalid paramArray");
+					throw new IllegalArgumentException("invalid reference : "
+							+ method);
 				}
 
 				final ReferenceBean bean = new ReferenceBean();
+				bean.apply(klaz, method, anno);
 
-				bean.apply(anno, method);
+				if (referenceList.contains(bean)) {
+					throw new IllegalArgumentException("duplicate reference : "
+							+ method);
+				}
 
 				referenceList.add(bean);
 
