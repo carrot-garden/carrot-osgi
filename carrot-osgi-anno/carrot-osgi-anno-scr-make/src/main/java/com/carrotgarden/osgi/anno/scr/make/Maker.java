@@ -24,7 +24,7 @@ public class Maker {
 
 	}
 
-	static boolean isAnnotationPresent(final Class<?> klaz) {
+	public static boolean isAnnotationPresent(final Class<?> klaz) {
 
 		if (klaz == null) {
 			return false;
@@ -38,7 +38,7 @@ public class Maker {
 
 	}
 
-	static List<Class<?>> getClassList(final Class<?> klaz) {
+	public static List<Class<?>> getClassList(final Class<?> klaz) {
 
 		final List<Class<?>> list = new LinkedList<Class<?>>();
 
@@ -58,7 +58,7 @@ public class Maker {
 
 	}
 
-	static ComponentBean makeBean(final Class<?> klaz) {
+	public static ComponentBean makeBean(final Class<?> klaz) {
 
 		final ComponentBean bean = new ComponentBean();
 

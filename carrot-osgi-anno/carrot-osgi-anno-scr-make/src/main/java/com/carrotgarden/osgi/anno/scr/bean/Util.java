@@ -94,8 +94,12 @@ class Util {
 			return;
 		}
 
-		throw new RuntimeException("mismatch : " + " bind=" + bindName
-				+ " unbind=" + unbindName);
+		throw new RuntimeException("mismatch : " + //
+				" klaz=" + klaz.getName() + //
+				" type=" + type.getName() + //
+				" bind=" + bindName + //
+				" unbind=" + unbindName + //
+				"");
 
 	}
 
