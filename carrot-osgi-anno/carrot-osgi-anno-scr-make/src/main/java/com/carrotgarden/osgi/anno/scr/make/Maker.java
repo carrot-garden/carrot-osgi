@@ -1,7 +1,10 @@
 package com.carrotgarden.osgi.anno.scr.make;
 
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.stream.XMLStreamException;
 
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
@@ -9,6 +12,11 @@ import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.bean.ComponentBean;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.StreamException;
+import com.thoughtworks.xstream.io.xml.QNameMap;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
+import com.thoughtworks.xstream.io.xml.StaxWriter;
 
 public class Maker {
 
@@ -16,10 +24,19 @@ public class Maker {
 
 	private final XStream xstream;
 
+	static final String NAME_SPACE = "http://www.osgi.org/xmlns/scr/v1.1.0";
+
+	static final String NAME_PREFIX = "scr";
+
 	public Maker() {
 
-		xstream = new XStream();
+		final QNameMap nameMap = new QNameMap();
+		nameMap.setDefaultNamespace(NAME_SPACE);
+		nameMap.setDefaultPrefix(NAME_PREFIX);
 
+		final StaxDriver driver = new StaxDriver(nameMap);
+
+		xstream = new XStream(driver);
 		xstream.autodetectAnnotations(true);
 
 	}
