@@ -1,10 +1,8 @@
 package com.carrotgarden.osgi.anno.scr.make;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 import org.junit.Test;
 import org.osgi.service.component.annotations.Reference;
@@ -18,24 +16,12 @@ public class TestMaker {
 	@Test
 	public void test0() {
 
-		final Class<?> klaz = Comp1.class;
-
-		final List<Class<?>> list = Maker.getClassList(klaz);
-
-		for (final Class<?> k : list) {
-			log.debug("k : {}", k);
-		}
-
 		assertTrue(true);
 
 	}
 
 	@Test
 	public void test1() {
-
-		assertFalse(Maker.isAnnotationPresent(Comp0.class));
-
-		assertTrue(Maker.isAnnotationPresent(Comp1.class));
 
 	}
 

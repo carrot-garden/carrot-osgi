@@ -63,14 +63,14 @@ public class ComponentBean {
 
 	//
 
-	ImplementationBean loadImplementation() {
+	private ImplementationBean loadImplementation() {
 		if (implementation == null) {
 			implementation = new ImplementationBean();
 		}
 		return implementation;
 	}
 
-	ServiceBean loadService() {
+	private ServiceBean loadService() {
 		if (service == null) {
 			service = new ServiceBean();
 		}
@@ -99,11 +99,14 @@ public class ComponentBean {
 
 		loadImplementation().klaz = klaz.getName();
 
-		loadService().servicefactory = component.servicefactory();
-
 	}
 
 	private void applyService(final Class<?> klaz) {
+
+		if (Util.hasComponent(klaz)) {
+			final Component component = klaz.getAnnotation(Component.class);
+			loadService().servicefactory = component.servicefactory();
+		}
 
 		loadService().apply(klaz);
 

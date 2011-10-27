@@ -1,6 +1,8 @@
 package com.carrotgarden.osgi.anno.scr.bean;
 
 import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -100,6 +102,40 @@ class Util {
 				" bind=" + bindName + //
 				" unbind=" + unbindName + //
 				"");
+
+	}
+
+	static List<Class<?>> getClassList(final Class<?> klaz) {
+
+		final List<Class<?>> list = new LinkedList<Class<?>>();
+
+		Class<?> type = klaz;
+
+		while (true) {
+
+			if (type == null) {
+				return list;
+			}
+
+			list.add(0, type);
+
+			type = type.getSuperclass();
+
+		}
+
+	}
+
+	static boolean isAnnotationPresent(final Class<?> klaz) {
+
+		if (klaz == null) {
+			return false;
+		}
+
+		if (klaz.isAnnotationPresent(Component.class)) {
+			return true;
+		} else {
+			return isAnnotationPresent(klaz.getSuperclass());
+		}
 
 	}
 
