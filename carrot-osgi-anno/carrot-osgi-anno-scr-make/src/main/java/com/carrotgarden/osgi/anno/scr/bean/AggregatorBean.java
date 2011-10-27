@@ -19,25 +19,35 @@ public class AggregatorBean {
 
 	//
 
+	private void applyClass(final Class<?> klaz) {
+
+		final ComponentBean bean = new ComponentBean();
+
+		final List<Class<?>> list = Util.getClassList(klaz);
+
+		for (final Class<?> type : list) {
+
+			bean.apply(type);
+
+		}
+
+		componentList.add(bean);
+
+	}
+
 	public void apply(final Class<?>... klazArray) {
 
 		for (final Class<?> klaz : klazArray) {
 
-			if (!Util.isAnnotationPresent(klaz)) {
+			if (Util.isAbstract(klaz)) {
 				continue;
 			}
 
-			final ComponentBean bean = new ComponentBean();
-
-			final List<Class<?>> list = Util.getClassList(klaz);
-
-			for (final Class<?> type : list) {
-
-				bean.apply(type);
-
+			if (!Util.isComponent(klaz)) {
+				continue;
 			}
 
-			componentList.add(bean);
+			applyClass(klaz);
 
 		}
 

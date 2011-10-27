@@ -1,6 +1,7 @@
 package com.carrotgarden.osgi.anno.scr.bean;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -125,7 +126,7 @@ class Util {
 
 	}
 
-	static boolean isAnnotationPresent(final Class<?> klaz) {
+	static boolean isComponent(final Class<?> klaz) {
 
 		if (klaz == null) {
 			return false;
@@ -134,9 +135,13 @@ class Util {
 		if (klaz.isAnnotationPresent(Component.class)) {
 			return true;
 		} else {
-			return isAnnotationPresent(klaz.getSuperclass());
+			return isComponent(klaz.getSuperclass());
 		}
 
+	}
+
+	static boolean isAbstract(final Class<?> klaz) {
+		return Modifier.isAbstract(klaz.getModifiers());
 	}
 
 }
