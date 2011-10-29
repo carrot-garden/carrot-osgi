@@ -20,7 +20,7 @@ public class Util {
 		return klaz.isAnnotationPresent(Component.class);
 	}
 
-	public static boolean hasProperties(final Class<?> klaz) {
+	public static boolean hasPropAnnotation(final Class<?> klaz) {
 		final Field[] fieldArray = klaz.getDeclaredFields();
 		for (final Field field : fieldArray) {
 			if (field.isAnnotationPresent(Property.class)) {

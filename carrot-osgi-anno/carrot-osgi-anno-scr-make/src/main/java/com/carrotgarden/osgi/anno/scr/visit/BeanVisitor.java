@@ -4,6 +4,7 @@ import com.carrotgarden.osgi.anno.scr.bean.AggregatorBean;
 import com.carrotgarden.osgi.anno.scr.bean.ComponentBean;
 import com.carrotgarden.osgi.anno.scr.bean.ImplementationBean;
 import com.carrotgarden.osgi.anno.scr.bean.PropertyBean;
+import com.carrotgarden.osgi.anno.scr.bean.PropertyFileBean;
 import com.carrotgarden.osgi.anno.scr.bean.ProvideBean;
 import com.carrotgarden.osgi.anno.scr.bean.ReferenceBean;
 import com.carrotgarden.osgi.anno.scr.bean.ServiceBean;
@@ -17,6 +18,8 @@ public interface BeanVisitor {
 	void visit(ImplementationBean implementation);
 
 	void visit(PropertyBean property);
+
+	void visit(PropertyFileBean propertyFileBean);
 
 	void visit(ProvideBean provide);
 
@@ -41,7 +44,11 @@ public interface BeanVisitor {
 		}
 
 		@Override
-		public void visit(final PropertyBean provide) {
+		public void visit(final PropertyBean property) {
+		}
+
+		@Override
+		public void visit(final PropertyFileBean propertyFile) {
 		}
 
 		@Override

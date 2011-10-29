@@ -60,6 +60,9 @@ public class ComponentBean implements BeanAcceptor {
 	@XStreamImplicit(itemFieldName = "property")
 	public List<PropertyBean> propertyList = new LinkedList<PropertyBean>();
 
+	@XStreamImplicit(itemFieldName = "properties")
+	public List<PropertyFileBean> propertyFileList = new LinkedList<PropertyFileBean>();
+
 	@XStreamImplicit(itemFieldName = "reference")
 	public List<ReferenceBean> referenceList = new LinkedList<ReferenceBean>();
 

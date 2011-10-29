@@ -14,6 +14,7 @@ import org.osgi.service.component.annotations.Reference;
 import com.carrotgarden.osgi.anno.scr.bean.AggregatorBean;
 import com.carrotgarden.osgi.anno.scr.bean.ComponentBean;
 import com.carrotgarden.osgi.anno.scr.bean.PropertyBean;
+import com.carrotgarden.osgi.anno.scr.bean.PropertyFileBean;
 import com.carrotgarden.osgi.anno.scr.bean.ProvideBean;
 import com.carrotgarden.osgi.anno.scr.bean.ReferenceBean;
 import com.carrotgarden.osgi.anno.scr.bean.ServiceBean;
@@ -51,9 +52,13 @@ public class Builder {
 
 			applyService(bean.service, type);
 
-			applyProperty(bean.propertyList, type);
+			applyPropKeyValue(bean, type);
 
-			applyReference(bean.referenceList, type);
+			applyPropFromFile(bean, type);
+
+			applyPropAnnotation(bean, type);
+
+			applyReference(bean, type);
 
 		}
 
@@ -117,16 +122,50 @@ public class Builder {
 
 			bean.service.servicefactory = anno.servicefactory();
 
+			//
+
+			for (final String entry : anno.property()) {
+				if (Util.isValid(entry) && entry.contains("=")) {
+					final String[] entryArray = entry.split("=");
+					final String name = entryArray[0];
+					final String value = entryArray[1];
+					final PropertyBean propBean = new PropertyBean();
+					propBean.name = name;
+					propBean.value = value;
+					bean.propertyList.add(propBean);
+				}
+			}
+
+			//
+
+			for (final String entry : anno.properties()) {
+				if (Util.isValid(entry)) {
+					final PropertyFileBean propBean = new PropertyFileBean();
+					propBean.entry = entry;
+					bean.propertyFileList.add(propBean);
+				}
+			}
+
 		}
 
 	}
 
-	private void applyProperty(final List<PropertyBean> propertyList,
+	private void applyPropKeyValue(final ComponentBean bean, final Class<?> type) {
+
+	}
+
+	private void applyPropFromFile(final ComponentBean bean, final Class<?> type) {
+
+	}
+
+	private void applyPropAnnotation(final ComponentBean component,
 			final Class<?> type) {
 
-		if (!Util.hasProperties(type)) {
+		if (!Util.hasPropAnnotation(type)) {
 			return;
 		}
+
+		final List<PropertyBean> propertyList = component.propertyList;
 
 		final Field[] fieldArray = type.getDeclaredFields();
 
@@ -206,8 +245,10 @@ public class Builder {
 
 	}
 
-	private void applyReference(final List<ReferenceBean> referenceList,
+	private void applyReference(final ComponentBean component,
 			final Class<?> type) {
+
+		final List<ReferenceBean> referenceList = component.referenceList;
 
 		final Method[] methodArray = type.getDeclaredMethods();
 

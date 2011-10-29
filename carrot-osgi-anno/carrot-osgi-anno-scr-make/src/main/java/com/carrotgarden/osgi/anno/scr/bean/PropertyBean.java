@@ -12,6 +12,8 @@ public class PropertyBean implements BeanAcceptor {
 
 	public String name;
 
+	public String type;
+
 	public String value;
 
 	//
