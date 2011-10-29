@@ -1,9 +1,15 @@
 package com.carrotgarden.osgi.anno.scr.make;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.bean.AggregatorBean;
+import com.carrotgarden.osgi.anno.scr.util.Util;
 import com.thoughtworks.xstream.XStream;
 
 public class Maker {
@@ -12,31 +18,42 @@ public class Maker {
 
 	private final XStream xstream;
 
-	static final String NAME_SPACE = "http://www.osgi.org/xmlns/scr/v1.1.0";
-	static final String NAME_PREFIX = "scr";
+	private final Builder builder;
 
 	public Maker() {
 
-		// final QNameMap nameMap = new QNameMap();
-		// nameMap.setDefaultNamespace(NAME_SPACE);
-		// nameMap.setDefaultPrefix(NAME_PREFIX);
-		// final StaxDriver driver = new StaxDriver(nameMap);
-		// xstream = new XStream(driver);
+		this(new HashSet<String>());
+
+	}
+
+	public Maker(final Set<String> ignoreService) {
 
 		xstream = new XStream();
 		xstream.autodetectAnnotations(true);
+
+		builder = new Builder(ignoreService);
 
 	}
 
 	public String make(final Class<?>... klazArray) {
 
-		final AggregatorBean bean = new AggregatorBean();
+		final List<Class<?>> klazList = new LinkedList<Class<?>>();
 
-		bean.apply(klazArray);
+		for (final Class<?> klaz : klazArray) {
+			if (Util.isAbstract(klaz)) {
+				continue;
+			}
+			if (!Util.hasComponent(klaz)) {
+				continue;
+			}
+			klazList.add(klaz);
+		}
 
-		if (bean.componentList.size() == 0) {
+		if (klazList.isEmpty()) {
 			return null;
 		}
+
+		final AggregatorBean bean = builder.makeAggregator(klazList);
 
 		return xstream.toXML(bean);
 

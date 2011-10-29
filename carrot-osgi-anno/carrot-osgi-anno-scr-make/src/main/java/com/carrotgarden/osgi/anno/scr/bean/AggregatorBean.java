@@ -3,12 +3,14 @@ package com.carrotgarden.osgi.anno.scr.bean;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.carrotgarden.osgi.anno.scr.visit.BeanAcceptor;
+import com.carrotgarden.osgi.anno.scr.visit.BeanVisitor;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias("container")
-public class AggregatorBean {
+public class AggregatorBean implements BeanAcceptor {
 
 	@XStreamAsAttribute
 	@XStreamAlias("xmlns")
@@ -19,38 +21,9 @@ public class AggregatorBean {
 
 	//
 
-	private void applyClass(final Class<?> klaz) {
-
-		final ComponentBean bean = new ComponentBean();
-
-		final List<Class<?>> list = Util.getClassList(klaz);
-
-		for (final Class<?> type : list) {
-
-			bean.apply(type);
-
-		}
-
-		componentList.add(bean);
-
-	}
-
-	public void apply(final Class<?>... klazArray) {
-
-		for (final Class<?> klaz : klazArray) {
-
-			if (Util.isAbstract(klaz)) {
-				continue;
-			}
-
-			if (!Util.isComponent(klaz)) {
-				continue;
-			}
-
-			applyClass(klaz);
-
-		}
-
+	@Override
+	public void accept(final BeanVisitor visitor) {
+		visitor.visit(this);
 	}
 
 }
