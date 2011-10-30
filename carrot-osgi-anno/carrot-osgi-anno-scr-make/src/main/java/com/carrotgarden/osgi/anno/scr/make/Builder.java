@@ -189,7 +189,7 @@ public class Builder {
 				final int indexColon = nameType.indexOf(":");
 
 				name = nameType.substring(0, indexColon);
-				type = PropertyType.from(nameType.substring(indexColon)).value;
+				type = PropertyType.from(nameType.substring(indexColon + 1)).value;
 
 				if (name.length() == 0) {
 					throw new IllegalArgumentException(
@@ -202,7 +202,7 @@ public class Builder {
 				type = PropertyType.STRING.value;
 			}
 
-			final String value = entry.substring(indexEquals);
+			final String value = entry.substring(indexEquals + 1);
 
 			final PropertyBean propBean = new PropertyBean();
 

@@ -8,7 +8,8 @@ import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Property;
 import org.osgi.service.component.annotations.Reference;
 
-@Component(property = { "hello=world", "be=happy" }, properties = {
+@Component(property = { "hello-string:String=world", "be=happy",
+		"wrong:type=wrong type", "size:Integer=100" }, properties = {
 		"OSGI-INF/hello.properties", "brand/system.properties" })
 public class Comp1 extends Comp0 implements Comparable<String> {
 
