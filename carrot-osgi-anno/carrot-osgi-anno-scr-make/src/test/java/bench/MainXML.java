@@ -24,7 +24,7 @@ public class MainXML {
 
 		final ComponentBean bean = new ComponentBean();
 
-		bean.service.provideList.add(new ProvideBean());
+		bean.service.provideSet.add(new ProvideBean());
 
 		log.debug("\n{}", xstream.toXML(bean));
 

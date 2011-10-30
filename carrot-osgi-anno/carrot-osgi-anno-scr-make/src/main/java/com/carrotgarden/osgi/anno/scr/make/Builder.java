@@ -3,9 +3,9 @@ package com.carrotgarden.osgi.anno.scr.make;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -52,15 +52,16 @@ public class Builder {
 
 		for (final Class<?> type : typeList) {
 
-			applyComponent(bean, type);
-
-			applyService(bean.service, type);
+			applyServiceInferred(bean, type);
 
 			applyPropertyEmbedded(bean, type);
 
 			applyReference(bean, type);
 
 			applyLifecycle(bean, type);
+
+			// keep last
+			applyComponent(bean, type);
 
 		}
 
@@ -96,7 +97,7 @@ public class Builder {
 
 	private void filterService(final ComponentBean bean) {
 
-		if (bean.service.provideList.isEmpty()) {
+		if (bean.service.provideSet.isEmpty()) {
 			bean.service = null;
 			return;
 		}
@@ -105,20 +106,20 @@ public class Builder {
 			return;
 		}
 
-		final List<ProvideBean> filteredList = new LinkedList<ProvideBean>();
+		final Set<ProvideBean> filteredSet = new TreeSet<ProvideBean>();
 
-		for (final ProvideBean provide : bean.service.provideList) {
+		for (final ProvideBean provide : bean.service.provideSet) {
 			if (ignoreService.contains(provide.type)) {
 				continue;
 			} else {
-				filteredList.add(provide);
+				filteredSet.add(provide);
 			}
 		}
 
-		if (filteredList.isEmpty()) {
+		if (filteredSet.isEmpty()) {
 			bean.service = null;
 		} else {
-			bean.service.provideList = filteredList;
+			bean.service.provideSet = filteredSet;
 		}
 
 	}
@@ -151,6 +152,10 @@ public class Builder {
 			applyPropertyKeyValue(bean, anno, type);
 
 			applyPropertyFileEntry(bean, anno, type);
+
+			//
+
+			applyServiceDeclared(bean, anno, type);
 
 		}
 
@@ -210,7 +215,8 @@ public class Builder {
 			propBean.type = type;
 			propBean.value = value;
 
-			bean.propertyList.add(propBean);
+			bean.propertySet.remove(propBean);
+			bean.propertySet.add(propBean);
 
 		}
 
@@ -231,7 +237,8 @@ public class Builder {
 
 			propBean.entry = entry;
 
-			bean.propertyFileList.add(propBean);
+			bean.propertyFileSet.remove(propBean);
+			bean.propertyFileSet.add(propBean);
 
 		}
 
@@ -295,13 +302,46 @@ public class Builder {
 			bean.type = PropertyType.STRING.value;
 			bean.value = value;
 
-			component.propertyList.add(bean);
+			component.propertySet.remove(bean);
+			component.propertySet.add(bean);
 
 		}
 
 	}
 
-	private void applyService(final ServiceBean service, final Class<?> type) {
+	private void applyServiceDeclared(final ComponentBean component,
+			final Component anno, final Class<?> type) {
+
+		final Class<?>[] serviceArray = anno.service();
+
+		if (serviceArray == null || serviceArray.length == 0) {
+			return;
+		}
+
+		final Set<ProvideBean> provideSet = component.service.provideSet;
+
+		provideSet.clear();
+
+		for (final Class<?> service : serviceArray) {
+
+			if (!service.isAssignableFrom(type)) {
+				throw new IllegalArgumentException(
+						"annotated service must also be implemented : "
+								+ service + " / " + type);
+			}
+
+			final ProvideBean bean = new ProvideBean();
+
+			bean.type = service.getName();
+
+			provideSet.add(bean);
+
+		}
+
+	}
+
+	private void applyServiceInferred(final ComponentBean component,
+			final Class<?> type) {
 
 		final Class<?>[] ifaceArray = type.getInterfaces();
 
@@ -309,16 +349,18 @@ public class Builder {
 			return;
 		}
 
+		final ServiceBean service = component.service;
+
 		for (final Class<?> iface : ifaceArray) {
 
 			final ProvideBean bean = new ProvideBean();
 			bean.type = iface.getName();
 
-			if (service.provideList.contains(bean)) {
+			if (service.provideSet.contains(bean)) {
 				continue;
 			}
 
-			service.provideList.add(bean);
+			service.provideSet.add(bean);
 
 		}
 
@@ -346,14 +388,14 @@ public class Builder {
 
 			final ReferenceBean bean = makeReference(type, method, anno);
 
-			final List<ReferenceBean> referenceList = component.referenceList;
+			final Set<ReferenceBean> referenceSet = component.referenceSet;
 
-			if (referenceList.contains(bean)) {
+			if (referenceSet.contains(bean)) {
 				throw new IllegalArgumentException("duplicate reference : "
 						+ method);
 			}
 
-			referenceList.add(bean);
+			referenceSet.add(bean);
 
 		}
 

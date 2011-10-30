@@ -1,7 +1,7 @@
 package com.carrotgarden.osgi.anno.scr.bean;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 
@@ -60,13 +60,13 @@ public class ComponentBean implements BeanAcceptor {
 	//
 
 	@XStreamImplicit(itemFieldName = "property")
-	public List<PropertyBean> propertyList = new LinkedList<PropertyBean>();
+	public Set<PropertyBean> propertySet = new TreeSet<PropertyBean>();
 
 	@XStreamImplicit(itemFieldName = "properties")
-	public List<PropertyFileBean> propertyFileList = new LinkedList<PropertyFileBean>();
+	public Set<PropertyFileBean> propertyFileSet = new TreeSet<PropertyFileBean>();
 
 	@XStreamImplicit(itemFieldName = "reference")
-	public List<ReferenceBean> referenceList = new LinkedList<ReferenceBean>();
+	public Set<ReferenceBean> referenceSet = new TreeSet<ReferenceBean>();
 
 	//
 

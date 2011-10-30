@@ -12,7 +12,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @XStreamAlias("reference")
-public class ReferenceBean implements BeanAcceptor {
+public class ReferenceBean implements BeanAcceptor, Comparable<ReferenceBean> {
 
 	@XStreamAsAttribute
 	@XStreamAlias("name")
@@ -45,6 +45,16 @@ public class ReferenceBean implements BeanAcceptor {
 	public String unbind;
 
 	//
+
+	@Override
+	public int compareTo(final ReferenceBean that) {
+		return this.name.compareTo(that.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 
 	@Override
 	public boolean equals(final Object other) {

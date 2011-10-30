@@ -1,7 +1,7 @@
 package com.carrotgarden.osgi.anno.scr.bean;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.carrotgarden.osgi.anno.scr.visit.BeanAcceptor;
 import com.carrotgarden.osgi.anno.scr.visit.BeanVisitor;
@@ -17,7 +17,7 @@ public class ServiceBean implements BeanAcceptor {
 	public boolean servicefactory = false;
 
 	@XStreamImplicit(itemFieldName = "provide")
-	public List<ProvideBean> provideList = new LinkedList<ProvideBean>();
+	public Set<ProvideBean> provideSet = new TreeSet<ProvideBean>();
 
 	//
 

@@ -6,11 +6,24 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("properties")
-public class PropertyFileBean implements BeanAcceptor {
+public class PropertyFileBean implements BeanAcceptor,
+		Comparable<PropertyFileBean> {
 
 	@XStreamAsAttribute
 	@XStreamAlias("entry")
 	public String entry;
+
+	//
+
+	@Override
+	public int compareTo(final PropertyFileBean that) {
+		return this.entry.compareTo(that.entry);
+	}
+
+	@Override
+	public int hashCode() {
+		return entry.hashCode();
+	}
 
 	@Override
 	public boolean equals(final Object other) {

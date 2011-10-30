@@ -30,7 +30,7 @@ public class TestMaker {
 
 		final Maker maker = new Maker();
 
-		log.debug("bean : \n{}", maker.make(Comp1.class));
+		log.debug("bean : \n{}", maker.make(Comp2.class));
 
 	}
 

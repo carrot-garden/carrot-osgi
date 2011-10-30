@@ -8,7 +8,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @XStreamAlias("property")
 @XStreamConverter(PropertyBeanConverter.class)
-public class PropertyBean implements BeanAcceptor {
+public class PropertyBean implements BeanAcceptor, Comparable<PropertyBean> {
 
 	public String name;
 
@@ -19,8 +19,29 @@ public class PropertyBean implements BeanAcceptor {
 	//
 
 	@Override
+	public int compareTo(final PropertyBean that) {
+		return this.name.compareTo(that.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object other) {
+		if (other instanceof PropertyBean) {
+			final PropertyBean that = (PropertyBean) other;
+			return this.name.equals(that.name);
+		}
+		return false;
+	}
+
+	//
+
+	@Override
 	public void accept(final BeanVisitor visitor) {
-		// TODO Auto-generated method stub
+		visitor.visit(this);
 	}
 
 }
