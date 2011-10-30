@@ -7,11 +7,11 @@ import static org.osgi.service.component.annotations.ReferenceCardinality.OPTION
 
 import org.osgi.service.component.annotations.ReferenceCardinality;
 
-public enum ReferenceCardinalityTag {
+public enum ReferenceCardinalityValue {
 
 	TAG_AT_LEAST_ONE(AT_LEAST_ONE, "1..n"), //
 
-	TAG_MULTIPLE(MULTIPLE, "1..n"), //
+	TAG_MULTIPLE(MULTIPLE, "0..n"), //
 
 	TAG_MANDATORY(MANDATORY, "1..1"), //
 
@@ -21,26 +21,26 @@ public enum ReferenceCardinalityTag {
 
 	public final ReferenceCardinality cardinality;
 
-	public final String tag;
+	public final String value;
 
-	ReferenceCardinalityTag(final ReferenceCardinality cardinality,
-			final String tag) {
+	ReferenceCardinalityValue(final ReferenceCardinality cardinality,
+			final String value) {
 		this.cardinality = cardinality;
-		this.tag = tag;
+		this.value = value;
 	}
 
-	public static ReferenceCardinalityTag from(final String tag) {
-		for (final ReferenceCardinalityTag known : values()) {
-			if (known.tag.equalsIgnoreCase(tag)) {
+	public static ReferenceCardinalityValue from(final String value) {
+		for (final ReferenceCardinalityValue known : values()) {
+			if (known.value.equalsIgnoreCase(value)) {
 				return known;
 			}
 		}
 		return TAG_MANDATORY;
 	}
 
-	public static ReferenceCardinalityTag from(
+	public static ReferenceCardinalityValue from(
 			final ReferenceCardinality cardinality) {
-		for (final ReferenceCardinalityTag known : values()) {
+		for (final ReferenceCardinalityValue known : values()) {
 			if (known.cardinality == cardinality) {
 				return known;
 			}

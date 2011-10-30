@@ -6,36 +6,37 @@ import static org.osgi.service.component.annotations.ConfigurationPolicy.REQUIRE
 
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 
-public enum ConfigurationPolicyTag {
+public enum ConfigurationPolicyValue {
 
 	TAG_IGNORE(IGNORE, "ignore"), //
 
 	TAG_OPTIONAL(OPTIONAL, "optional"), //
 
-	TAG_REQUIRE(REQUIRE, "optional"), //
+	TAG_REQUIRE(REQUIRE, "require"), //
 
 	;
 
 	public final ConfigurationPolicy policy;
 
-	public final String tag;
+	public final String value;
 
-	ConfigurationPolicyTag(final ConfigurationPolicy policy, final String tag) {
+	ConfigurationPolicyValue(final ConfigurationPolicy policy,
+			final String value) {
 		this.policy = policy;
-		this.tag = tag;
+		this.value = value;
 	}
 
-	public static ConfigurationPolicyTag from(final String tag) {
-		for (final ConfigurationPolicyTag known : values()) {
-			if (known.tag.equalsIgnoreCase(tag)) {
+	public static ConfigurationPolicyValue from(final String value) {
+		for (final ConfigurationPolicyValue known : values()) {
+			if (known.value.equalsIgnoreCase(value)) {
 				return known;
 			}
 		}
 		return TAG_OPTIONAL;
 	}
 
-	public static ConfigurationPolicyTag from(final ConfigurationPolicy policy) {
-		for (final ConfigurationPolicyTag known : values()) {
+	public static ConfigurationPolicyValue from(final ConfigurationPolicy policy) {
+		for (final ConfigurationPolicyValue known : values()) {
 			if (known.policy == policy) {
 				return known;
 			}

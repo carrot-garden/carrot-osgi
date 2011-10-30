@@ -19,17 +19,17 @@ public class ReferencePolicyConverter extends AbstractSingleValueConverter {
 	@Override
 	public String toString(final Object value) {
 
-		final ReferencePolicyTag policyTag = ReferencePolicyTag
+		final ReferencePolicyValue policyTag = ReferencePolicyValue
 				.from((ReferencePolicy) value);
 
-		return policyTag.tag;
+		return policyTag.value;
 
 	}
 
 	@Override
 	public Object fromString(final String text) {
 
-		final ReferencePolicyTag policyTag = ReferencePolicyTag.from(text);
+		final ReferencePolicyValue policyTag = ReferencePolicyValue.from(text);
 
 		return policyTag.policy;
 

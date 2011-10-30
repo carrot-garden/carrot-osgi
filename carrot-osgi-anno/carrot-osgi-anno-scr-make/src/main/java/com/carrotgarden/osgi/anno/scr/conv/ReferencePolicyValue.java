@@ -5,7 +5,7 @@ import static org.osgi.service.component.annotations.ReferencePolicy.STATIC;
 
 import org.osgi.service.component.annotations.ReferencePolicy;
 
-public enum ReferencePolicyTag {
+public enum ReferencePolicyValue {
 
 	_STATIC_(STATIC, "static"), //
 
@@ -15,24 +15,24 @@ public enum ReferencePolicyTag {
 
 	public final ReferencePolicy policy;
 
-	public final String tag;
+	public final String value;
 
-	ReferencePolicyTag(final ReferencePolicy policy, final String tag) {
+	ReferencePolicyValue(final ReferencePolicy policy, final String value) {
 		this.policy = policy;
-		this.tag = tag;
+		this.value = value;
 	}
 
-	public static ReferencePolicyTag from(final String tag) {
-		for (final ReferencePolicyTag known : values()) {
-			if (known.tag.equalsIgnoreCase(tag)) {
+	public static ReferencePolicyValue from(final String value) {
+		for (final ReferencePolicyValue known : values()) {
+			if (known.value.equalsIgnoreCase(value)) {
 				return known;
 			}
 		}
 		return _STATIC_;
 	}
 
-	public static ReferencePolicyTag from(final ReferencePolicy policy) {
-		for (final ReferencePolicyTag known : values()) {
+	public static ReferencePolicyValue from(final ReferencePolicy policy) {
+		for (final ReferencePolicyValue known : values()) {
 			if (known.policy == policy) {
 				return known;
 			}

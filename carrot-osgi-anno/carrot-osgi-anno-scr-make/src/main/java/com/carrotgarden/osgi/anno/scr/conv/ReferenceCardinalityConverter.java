@@ -19,17 +19,17 @@ public class ReferenceCardinalityConverter extends AbstractSingleValueConverter 
 	@Override
 	public String toString(final Object value) {
 
-		final ReferenceCardinalityTag policyTag = ReferenceCardinalityTag
+		final ReferenceCardinalityValue policyTag = ReferenceCardinalityValue
 				.from((ReferenceCardinality) value);
 
-		return policyTag.tag;
+		return policyTag.value;
 
 	}
 
 	@Override
 	public Object fromString(final String text) {
 
-		final ReferenceCardinalityTag policyTag = ReferenceCardinalityTag
+		final ReferenceCardinalityValue policyTag = ReferenceCardinalityValue
 				.from(text);
 
 		return policyTag.cardinality;

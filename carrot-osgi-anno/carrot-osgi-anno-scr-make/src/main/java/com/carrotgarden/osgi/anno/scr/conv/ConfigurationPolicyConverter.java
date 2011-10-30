@@ -21,17 +21,17 @@ public class ConfigurationPolicyConverter extends AbstractSingleValueConverter {
 	@Override
 	public String toString(final Object value) {
 
-		final ConfigurationPolicyTag policyTag = ConfigurationPolicyTag
+		final ConfigurationPolicyValue policyTag = ConfigurationPolicyValue
 				.from((ConfigurationPolicy) value);
 
-		return policyTag.tag;
+		return policyTag.value;
 
 	}
 
 	@Override
 	public Object fromString(final String text) {
 
-		final ConfigurationPolicyTag policyTag = ConfigurationPolicyTag
+		final ConfigurationPolicyValue policyTag = ConfigurationPolicyValue
 				.from(text);
 
 		return policyTag.policy;
