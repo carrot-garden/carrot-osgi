@@ -22,6 +22,7 @@ public class PropertyBeanConverter implements Converter {
 		final PropertyBean bean = (PropertyBean) value;
 
 		writer.addAttribute("name", bean.name);
+		writer.addAttribute("type", bean.type);
 		writer.setValue(bean.value);
 
 	}
@@ -33,6 +34,7 @@ public class PropertyBeanConverter implements Converter {
 		final PropertyBean bean = new PropertyBean();
 
 		bean.name = reader.getAttribute("name");
+		bean.type = reader.getAttribute("type");
 		bean.value = reader.getValue();
 
 		return bean;

@@ -7,7 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Property;
 import org.osgi.service.component.annotations.Reference;
 
@@ -18,6 +21,7 @@ import com.carrotgarden.osgi.anno.scr.bean.PropertyFileBean;
 import com.carrotgarden.osgi.anno.scr.bean.ProvideBean;
 import com.carrotgarden.osgi.anno.scr.bean.ReferenceBean;
 import com.carrotgarden.osgi.anno.scr.bean.ServiceBean;
+import com.carrotgarden.osgi.anno.scr.conv.PropertyType;
 import com.carrotgarden.osgi.anno.scr.util.Util;
 
 public class Builder {
@@ -52,19 +56,41 @@ public class Builder {
 
 			applyService(bean.service, type);
 
-			applyPropKeyValue(bean, type);
-
-			applyPropFromFile(bean, type);
-
-			applyPropAnnotation(bean, type);
+			applyPropertyEmbedded(bean, type);
 
 			applyReference(bean, type);
+
+			applyLifecycle(bean, type);
 
 		}
 
 		filterService(bean);
 
 		return bean;
+
+	}
+
+	private void applyLifecycle(final ComponentBean bean, final Class<?> type) {
+
+		final Method[] methodArray = type.getDeclaredMethods();
+
+		for (final Method method : methodArray) {
+
+			final String methodName = method.getName();
+
+			if (method.getAnnotation(Activate.class) != null) {
+				bean.activate = methodName;
+			}
+
+			if (method.getAnnotation(Deactivate.class) != null) {
+				bean.deactivate = methodName;
+			}
+
+			if (method.getAnnotation(Modified.class) != null) {
+				bean.modified = methodName;
+			}
+
+		}
 
 	}
 
@@ -118,54 +144,105 @@ public class Builder {
 
 			bean.implementation.klaz = type.getName();
 
-			//
-
 			bean.service.servicefactory = anno.servicefactory();
 
 			//
 
-			for (final String entry : anno.property()) {
-				if (Util.isValid(entry) && entry.contains("=")) {
-					final String[] entryArray = entry.split("=");
-					final String name = entryArray[0];
-					final String value = entryArray[1];
-					final PropertyBean propBean = new PropertyBean();
-					propBean.name = name;
-					propBean.value = value;
-					bean.propertyList.add(propBean);
-				}
-			}
+			applyPropertyKeyValue(bean, anno, type);
 
-			//
-
-			for (final String entry : anno.properties()) {
-				if (Util.isValid(entry)) {
-					final PropertyFileBean propBean = new PropertyFileBean();
-					propBean.entry = entry;
-					bean.propertyFileList.add(propBean);
-				}
-			}
+			applyPropertyFileEntry(bean, anno, type);
 
 		}
 
 	}
 
-	private void applyPropKeyValue(final ComponentBean bean, final Class<?> type) {
+	private void applyPropertyKeyValue(final ComponentBean bean,
+			final Component anno, final Class<?> klaz) {
+
+		for (final String entry : anno.property()) {
+
+			if (!Util.isValid(entry)) {
+				throw new IllegalArgumentException(
+						"property must not be empty : " + klaz + " / " + anno);
+			}
+
+			if (!entry.contains("=")) {
+				throw new IllegalArgumentException(
+						"property must contain '=' : " + klaz + " / " + anno);
+			}
+
+			final int indexEquals = entry.indexOf("=");
+
+			final String nameType = entry.substring(0, indexEquals);
+
+			if (nameType.length() == 0) {
+				throw new IllegalArgumentException(
+						"property name must not be empty : " + klaz + " / "
+								+ anno);
+			}
+
+			final String name;
+			final String type;
+
+			if (nameType.contains(":")) {
+
+				final int indexColon = nameType.indexOf(":");
+
+				name = nameType.substring(0, indexColon);
+				type = PropertyType.from(nameType.substring(indexColon)).value;
+
+				if (name.length() == 0) {
+					throw new IllegalArgumentException(
+							"property name must not be empty : " + klaz + " / "
+									+ anno);
+				}
+
+			} else {
+				name = nameType;
+				type = PropertyType.STRING.value;
+			}
+
+			final String value = entry.substring(indexEquals);
+
+			final PropertyBean propBean = new PropertyBean();
+
+			propBean.name = name;
+			propBean.type = type;
+			propBean.value = value;
+
+			bean.propertyList.add(propBean);
+
+		}
 
 	}
 
-	private void applyPropFromFile(final ComponentBean bean, final Class<?> type) {
+	private void applyPropertyFileEntry(final ComponentBean bean,
+			final Component anno, final Class<?> type) {
+
+		for (final String entry : anno.properties()) {
+
+			if (!Util.isValid(entry)) {
+				throw new IllegalArgumentException(
+						"property entry must not be empty : " + type + " / "
+								+ anno);
+			}
+
+			final PropertyFileBean propBean = new PropertyFileBean();
+
+			propBean.entry = entry;
+
+			bean.propertyFileList.add(propBean);
+
+		}
 
 	}
 
-	private void applyPropAnnotation(final ComponentBean component,
+	private void applyPropertyEmbedded(final ComponentBean component,
 			final Class<?> type) {
 
-		if (!Util.hasPropAnnotation(type)) {
+		if (!Util.hasProperty(type)) {
 			return;
 		}
-
-		final List<PropertyBean> propertyList = component.propertyList;
 
 		final Field[] fieldArray = type.getDeclaredFields();
 
@@ -213,10 +290,12 @@ public class Builder {
 			}
 
 			final PropertyBean bean = new PropertyBean();
+
 			bean.name = name;
+			bean.type = PropertyType.STRING.value;
 			bean.value = value;
 
-			propertyList.add(bean);
+			component.propertyList.add(bean);
 
 		}
 
@@ -248,8 +327,6 @@ public class Builder {
 	private void applyReference(final ComponentBean component,
 			final Class<?> type) {
 
-		final List<ReferenceBean> referenceList = component.referenceList;
-
 		final Method[] methodArray = type.getDeclaredMethods();
 
 		for (final Method method : methodArray) {
@@ -268,6 +345,8 @@ public class Builder {
 			}
 
 			final ReferenceBean bean = makeReference(type, method, anno);
+
+			final List<ReferenceBean> referenceList = component.referenceList;
 
 			if (referenceList.contains(bean)) {
 				throw new IllegalArgumentException("duplicate reference : "

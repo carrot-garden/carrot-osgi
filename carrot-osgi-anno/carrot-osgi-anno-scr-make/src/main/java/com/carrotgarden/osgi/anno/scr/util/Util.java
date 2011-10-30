@@ -1,5 +1,6 @@
 package com.carrotgarden.osgi.anno.scr.util;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -20,7 +21,7 @@ public class Util {
 		return klaz.isAnnotationPresent(Component.class);
 	}
 
-	public static boolean hasPropAnnotation(final Class<?> klaz) {
+	public static boolean hasProperty(final Class<?> klaz) {
 		final Field[] fieldArray = klaz.getDeclaredFields();
 		for (final Field field : fieldArray) {
 			if (field.isAnnotationPresent(Property.class)) {
@@ -113,7 +114,7 @@ public class Util {
 			return;
 		}
 
-		throw new RuntimeException("mismatch : " + //
+		throw new IllegalArgumentException("mismatch : " + //
 				" klaz=" + klaz.getName() + //
 				" type=" + type.getName() + //
 				" bind=" + bindName + //
@@ -124,7 +125,7 @@ public class Util {
 
 	public static List<Class<?>> getInheritanceList(final Class<?> klaz) {
 
-		final List<Class<?>> list = new LinkedList<Class<?>>();
+		final LinkedList<Class<?>> list = new LinkedList<Class<?>>();
 
 		Class<?> type = klaz;
 
@@ -134,7 +135,7 @@ public class Util {
 				return list;
 			}
 
-			list.add(0, type);
+			list.addFirst(type);
 
 			type = type.getSuperclass();
 
@@ -142,6 +143,7 @@ public class Util {
 
 	}
 
+	@SuppressWarnings("unused")
 	private static boolean isComponent(final Class<?> klaz) {
 
 		if (klaz == null) {
@@ -158,6 +160,25 @@ public class Util {
 
 	public static boolean isAbstract(final Class<?> klaz) {
 		return Modifier.isAbstract(klaz.getModifiers());
+	}
+
+	public static String getMethodName(
+			final Class<? extends Annotation> annoType, final Class<?> klazType) {
+
+		final Method[] methodArray = klazType.getDeclaredMethods();
+
+		for (final Method method : methodArray) {
+
+			final Annotation anno = method.getAnnotation(annoType);
+
+			if (anno != null) {
+				return method.getName();
+			}
+
+		}
+
+		return null;
+
 	}
 
 }

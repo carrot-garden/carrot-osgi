@@ -3,6 +3,8 @@ package com.carrotgarden.osgi.anno.scr.make;
 import java.util.concurrent.Future;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Property;
 import org.osgi.service.component.annotations.Reference;
 
@@ -19,6 +21,16 @@ public class Comp1 extends Comp0 implements Comparable<String> {
 	@Override
 	public int compareTo(final String o) {
 		return 0;
+	}
+
+	@Modified
+	protected void modified1() {
+
+	}
+
+	@Deactivate
+	protected void deactivate1() {
+
 	}
 
 	//

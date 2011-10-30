@@ -57,6 +57,8 @@ public class ComponentBean implements BeanAcceptor {
 
 	public ServiceBean service = new ServiceBean();
 
+	//
+
 	@XStreamImplicit(itemFieldName = "property")
 	public List<PropertyBean> propertyList = new LinkedList<PropertyBean>();
 

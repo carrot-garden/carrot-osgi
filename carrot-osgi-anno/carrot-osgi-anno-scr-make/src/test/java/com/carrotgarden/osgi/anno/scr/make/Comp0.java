@@ -3,14 +3,22 @@ package com.carrotgarden.osgi.anno.scr.make;
 import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 public abstract class Comp0 implements Runnable {
 
 	@Activate
-	protected void activate() {
+	protected void activate0() {
 
 	}
+
+	@Modified
+	protected void modified0() {
+
+	}
+
+	//
 
 	@Override
 	public void run() {
