@@ -78,10 +78,10 @@ public class Util {
 
 	}
 
-	public static String unbindName(final String bindName) {
+	public static String getUnbindName(final String bindName) {
 
 		if (bindName.startsWith("add")) {
-			return "remove" + bindName.replaceFirst("add", "");
+			return bindName.replaceFirst("add", "remove");
 		}
 
 		return "un" + bindName;
@@ -125,7 +125,9 @@ public class Util {
 
 	}
 
-	/** ordered from most deep super class upwards */
+	/**
+	 * ordered from most deep super class upwards
+	 */
 	public static List<Class<?>> getInheritanceList(final Class<?> klaz) {
 
 		final LinkedList<Class<?>> list = new LinkedList<Class<?>>();

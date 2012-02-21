@@ -1,0 +1,8 @@
+<container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
+  <component name="com.carrotgarden.osgi.anno.scr.case01.Comp_01_service" enabled="true" immediate="false" configuration-policy="optional">
+    <implementation class="com.carrotgarden.osgi.anno.scr.case01.Comp_01_service"/>
+    <service servicefactory="false">
+      <provide interface="java.lang.Runnable"/>
+    </service>
+  </component>
+</container>

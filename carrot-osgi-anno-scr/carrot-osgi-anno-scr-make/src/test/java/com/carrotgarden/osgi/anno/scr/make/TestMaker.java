@@ -1,53 +1,84 @@
 package com.carrotgarden.osgi.anno.scr.make;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.lang.reflect.Method;
+import java.io.InputStream;
 
 import org.junit.Test;
-import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.carrotgarden.osgi.anno.scr.case01.Comp_01_empty;
+import com.carrotgarden.osgi.anno.scr.case01.Comp_01_factory;
+import com.carrotgarden.osgi.anno.scr.case01.Comp_01_reference;
+import com.carrotgarden.osgi.anno.scr.case01.Comp_01_reference_dynamic;
+import com.carrotgarden.osgi.anno.scr.case01.Comp_01_service;
+import com.carrotgarden.osgi.anno.scr.case01.Comp_01_with_name;
+import com.carrotgarden.osgi.anno.scr.case02.Comp_02_0;
+import com.carrotgarden.osgi.anno.scr.case02.Comp_02_1;
+import com.carrotgarden.osgi.anno.scr.case02.Comp_02_2;
 
 public class TestMaker {
 
 	static final Logger log = LoggerFactory.getLogger(TestMaker.class);
 
-	@Test
-	public void test0() {
+	static String convertStreamToString(final InputStream input) {
 
-		assertTrue(true);
+		if (input == null) {
+			return null;
+		}
 
+		try {
+			return new java.util.Scanner(input).useDelimiter("\\A").next();
+		} catch (final Exception e) {
+			return "";
+		}
 	}
 
-	@Test
-	public void test1() {
+	static void testClass(final Class<?> klaz) {
 
-	}
-
-	@Test
-	public void test2() {
+		log.debug("######################################");
+		log.debug("test class : {}", klaz.getName());
 
 		final Maker maker = new Maker();
 
-		log.debug("bean : \n{}", maker.make(Comp2.class));
+		final String source = maker.make(klaz);
+		log.debug("source : \n{}", source);
+
+		final String fileName = klaz.getSimpleName() + ".xml";
+		final InputStream input = klaz.getResourceAsStream(fileName);
+		final String target = convertStreamToString(input);
+		log.debug("target : \n{}", target);
+
+		assertEquals(source, target);
 
 	}
 
-	// @Test
-	public void test3() {
+	@Test
+	public void test01() {
 
-		final Method[] methodArray = Comp1.class.getDeclaredMethods();
+		testClass(Comp_01_empty.class);
 
-		for (final Method method : methodArray) {
+		testClass(Comp_01_with_name.class);
 
-			log.debug("method : {}", method);
+		testClass(Comp_01_service.class);
 
-			if (method.isAnnotationPresent(Reference.class)) {
-				log.debug("isAnnotationPresent : {}", method);
-			}
+		testClass(Comp_01_reference.class);
 
-		}
+		testClass(Comp_01_reference_dynamic.class);
+
+		testClass(Comp_01_factory.class);
+
+	}
+
+	@Test
+	public void test02() {
+
+		testClass(Comp_02_0.class);
+
+		testClass(Comp_02_1.class);
+
+		testClass(Comp_02_2.class);
 
 	}
 

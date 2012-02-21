@@ -13,6 +13,8 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Property;
 import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.bean.AggregatorBean;
 import com.carrotgarden.osgi.anno.scr.bean.ComponentBean;
@@ -25,6 +27,8 @@ import com.carrotgarden.osgi.anno.scr.conv.PropertyType;
 import com.carrotgarden.osgi.anno.scr.util.Util;
 
 public class Builder {
+
+	private static final Logger log = LoggerFactory.getLogger(Builder.class);
 
 	/**
 	 * names of interfaces that should be excluded from
@@ -494,7 +498,7 @@ public class Builder {
 
 		reference.bind = bindName;
 
-		reference.unbind = Util.unbindName(bindName);
+		reference.unbind = Util.getUnbindName(bindName);
 
 		//
 

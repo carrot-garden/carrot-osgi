@@ -14,7 +14,7 @@ import com.thoughtworks.xstream.XStream;
 
 public class Maker {
 
-	static final Logger log = LoggerFactory.getLogger(Maker.class);
+	private static final Logger log = LoggerFactory.getLogger(Maker.class);
 
 	private final XStream xstream;
 
@@ -35,6 +35,12 @@ public class Maker {
 
 	}
 
+	/**
+	 * generate SCR xml descriptors
+	 * 
+	 * @return valid xml or null
+	 * 
+	 */
 	public String make(final Class<?>... klazArray) {
 
 		final List<Class<?>> klazList = new LinkedList<Class<?>>();

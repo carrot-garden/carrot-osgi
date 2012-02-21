@@ -1,0 +1,9 @@
+<container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
+  <component name="com.carrotgarden.osgi.anno.scr.case01.Comp_01_factory" enabled="true" factory="factory uuid" immediate="false" configuration-policy="optional">
+    <implementation class="com.carrotgarden.osgi.anno.scr.case01.Comp_01_factory"/>
+    <service servicefactory="false">
+      <provide interface="java.lang.Runnable"/>
+    </service>
+    <reference name="java.lang.Comparable/*" interface="java.lang.Comparable" cardinality="0..n" policy="dynamic" bind="bind" unbind="unbind"/>
+  </component>
+</container>

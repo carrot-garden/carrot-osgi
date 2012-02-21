@@ -1,0 +1,28 @@
+<container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
+  <component name="com.carrotgarden.osgi.anno.scr.case02.Comp_02_2" enabled="true" immediate="false" configuration-policy="optional" activate="activate2" deactivate="deactivate1" modified="modified1">
+    <implementation class="com.carrotgarden.osgi.anno.scr.case02.Comp_02_2"/>
+    <service servicefactory="false">
+      <provide interface="java.lang.Comparable"/>
+      <provide interface="java.util.concurrent.Callable"/>
+    </service>
+    <property name="OVER" type="String">level 2</property>
+    <property name="be" type="String">happy at comp 1</property>
+    <property name="good-bye" type="String">hello property</property>
+    <property name="hello" type="String">hello property</property>
+    <property name="hello-2" type="Float">2.5</property>
+    <property name="hello-string" type="String">world</property>
+    <property name="override" type="String">level 2</property>
+    <property name="size" type="Integer">100</property>
+    <property name="wrong" type="String">wrong type</property>
+    <properties entry="OSGI-INF/hello.properties"/>
+    <properties entry="brand/system.properties"/>
+    <reference name="java.lang.CharSequence/*" interface="java.lang.CharSequence" cardinality="1..1" policy="static" bind="bind" unbind="unbind"/>
+    <reference name="java.lang.Cloneable/*" interface="java.lang.Cloneable" cardinality="1..1" policy="static" bind="add" unbind="remove"/>
+    <reference name="java.lang.Comparable/*" interface="java.lang.Comparable" cardinality="1..1" policy="static" bind="comp" unbind="uncomp"/>
+    <reference name="java.lang.Runnable/*" interface="java.lang.Runnable" cardinality="1..1" policy="static" bind="make" unbind="unmake"/>
+    <reference name="java.util.concurrent.Callable/*" interface="java.util.concurrent.Callable" cardinality="1..1" policy="static" bind="set" unbind="unset"/>
+    <reference name="java.util.concurrent.Executor/*" interface="java.util.concurrent.Executor" cardinality="1..1" policy="static" bind="addSomeThing" unbind="removeSomeThing"/>
+    <reference name="java.util.concurrent.Future/*" interface="java.util.concurrent.Future" cardinality="1..1" policy="static" bind="bindSome" unbind="unbindSome"/>
+    <reference name="override" interface="java.lang.Runnable" cardinality="1..1" policy="static" bind="make" unbind="unmake"/>
+  </component>
+</container>

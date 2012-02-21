@@ -1,4 +1,4 @@
-package com.carrotgarden.osgi.anno.scr.make;
+package com.carrotgarden.osgi.anno.scr.case02;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -12,14 +12,17 @@ import org.osgi.service.component.annotations.Property;
 
 @Component(
 //
+// should remove duplicates
 service = { Callable.class, Callable.class, Callable.class, Comparable.class },
 //
-property = { "override=level 2", "hello-2:Float=hello from comp 2" }
+// should override "override" form level 1
+property = { "override=level 2", "hello-2:Float=2.5" }
 //
 )
-public class Comp2 extends Comp1 implements Callable, Runnable,
+public class Comp_02_2 extends Comp_02_1 implements Callable, Runnable,
 		Comparable<String>, Future<String> {
 
+	// should overrid level 1
 	@Property
 	static final String OVER = "level 2";
 

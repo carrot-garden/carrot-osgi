@@ -1,4 +1,4 @@
-package com.carrotgarden.osgi.anno.scr.make;
+package com.carrotgarden.osgi.anno.scr.case02;
 
 import java.util.concurrent.Callable;
 
@@ -6,7 +6,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
-public abstract class Comp0 implements Runnable {
+public abstract class Comp_02_0 implements Runnable {
 
 	@Activate
 	protected void activate0() {
@@ -37,10 +37,10 @@ public abstract class Comp0 implements Runnable {
 	//
 
 	@Reference
-	protected void set(final Callable task) {
+	protected void set(final Callable<?> task) {
 	}
 
-	protected void unset(final Callable task) {
+	protected void unset(final Callable<?> task) {
 	}
 
 	//
