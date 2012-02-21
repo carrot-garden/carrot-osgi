@@ -6,7 +6,7 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
-//should not produce xml; since abstrace
+//should not produce xml; since abstract
 public abstract class Comp_02_0 implements Runnable {
 
 	@Activate
