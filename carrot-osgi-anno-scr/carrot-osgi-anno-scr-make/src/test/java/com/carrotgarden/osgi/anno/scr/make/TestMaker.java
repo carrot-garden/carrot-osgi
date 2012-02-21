@@ -17,6 +17,7 @@ import com.carrotgarden.osgi.anno.scr.case01.Comp_01_with_name;
 import com.carrotgarden.osgi.anno.scr.case02.Comp_02_0;
 import com.carrotgarden.osgi.anno.scr.case02.Comp_02_1;
 import com.carrotgarden.osgi.anno.scr.case02.Comp_02_2;
+import com.carrotgarden.osgi.anno.scr.case02.Comp_02_3;
 
 public class TestMaker {
 
@@ -74,11 +75,13 @@ public class TestMaker {
 	@Test
 	public void test02() {
 
-		testClass(Comp_02_0.class);
+		testClass(Comp_02_0.class); // missing
 
 		testClass(Comp_02_1.class);
 
 		testClass(Comp_02_2.class);
+
+		testClass(Comp_02_3.class); // missing
 
 	}
 

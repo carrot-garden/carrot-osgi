@@ -37,12 +37,14 @@ public class Comp_02_1 extends Comp_02_0 implements Comparable<String>,
 	}
 
 	// should be overwritten by level 2
+	// should use field name
 	@Property
 	static final String OVER = "level 1";
 
 	@Property
 	static final String hello = "hello property";
 
+	// should use provided name instead of field name
 	@Property(name = "good-bye")
 	static final String goodBye = "hello property";
 
