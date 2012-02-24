@@ -39,19 +39,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>3.3.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm-tree</artifactId>
-			<version>3.3.1</version>
-			<scope>provided</scope>
-		</dependency>
-
 	</dependencies>
 
 </project>
