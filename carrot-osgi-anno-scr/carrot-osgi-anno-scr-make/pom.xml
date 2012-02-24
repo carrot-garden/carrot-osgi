@@ -41,4 +41,17 @@
 
 	</dependencies>
 
+	<build>
+
+		<testResources>
+			<testResource>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</testResource>
+		</testResources>
+
+	</build>
+
 </project>
