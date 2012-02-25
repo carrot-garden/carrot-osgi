@@ -15,6 +15,8 @@ import java.lang.annotation.Target;
  * 
  * String Long Double Float Integer Byte Character Short
  * 
+ * String property can be multi-value; in this case use "\n" to separate values
+ * 
  * @see Component
  * 
  */
@@ -25,7 +27,7 @@ public @interface Property {
 	/**
 	 * use name() if provided;
 	 * 
-	 * use target final static String field name otherwise
+	 * use annotation target final static field name otherwise
 	 */
 	String name() default "";
 
