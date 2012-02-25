@@ -9,7 +9,11 @@ import java.lang.annotation.Target;
  * 
  * not in osgi spec yet;
  * 
- * must be used on static final String fields;
+ * must be used on static final fields;
+ * 
+ * type must be one of osgi type:
+ * 
+ * String Long Double Float Integer Byte Character Short
  * 
  * @see Component
  * 

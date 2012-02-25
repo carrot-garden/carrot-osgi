@@ -1,31 +1,35 @@
 package com.carrotgarden.osgi.anno.scr.conv;
 
+
 public enum PropertyType {
 
-	STRING("String"), // default
+	STRING(String.class), // default
 
-	LONG("Long"), //
+	LONG(Long.class), //
 
-	DOUBLE("Double"), //
+	DOUBLE(Double.class), //
 
-	FLOAT("Float"), //
+	FLOAT(Float.class), //
 
-	INTEGER("Integer"), //
+	INTEGER(Integer.class), //
 
-	BYTE("Byte"), //
+	BYTE(Byte.class), //
 
-	CHARACTER("Character"), //
+	CHARACTER(Character.class), //
 
-	BOOLEAN("Boolean"), //
+	BOOLEAN(Boolean.class), //
 
-	SHORT("Short"), //
+	SHORT(Short.class), //
 
 	;
 
-	public String value;
+	public final Class<?> klaz;
 
-	private PropertyType(final String value) {
-		this.value = value;
+	public final String value;
+
+	private PropertyType(final Class<?> klaz) {
+		this.klaz = klaz;
+		this.value = klaz.getSimpleName();
 	}
 
 	private static final PropertyType[] ENUM_VALS = values();
@@ -40,6 +44,40 @@ public enum PropertyType {
 
 		return STRING;
 
+	}
+
+	public static PropertyType from(final Class<?> klaz) {
+
+		for (final PropertyType known : ENUM_VALS) {
+			if (known.klaz == klaz) {
+				return known;
+			}
+		}
+
+		return STRING;
+
+	}
+
+	public static boolean isValidType(final Class<?> klaz) {
+
+		for (final PropertyType known : ENUM_VALS) {
+			if (known.klaz == klaz) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
+	public static String getList() {
+		final StringBuilder text = new StringBuilder(128);
+		text.append(" ");
+		for (final PropertyType known : ENUM_VALS) {
+			text.append(known.value);
+			text.append(" ");
+		}
+		return text.toString();
 	}
 
 }

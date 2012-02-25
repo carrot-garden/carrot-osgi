@@ -1,0 +1,14 @@
+<container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
+  <component name="com.carrotgarden.osgi.anno.scr.case03.Comp_03_1_props" enabled="true" immediate="false" configuration-policy="optional">
+    <implementation class="com.carrotgarden.osgi.anno.scr.case03.Comp_03_1_props"/>
+    <property name="BOOL" type="Boolean">true</property>
+    <property name="BYTE" type="Byte">-1</property>
+    <property name="CHAR" type="Character">A</property>
+    <property name="DOUBLE" type="Double">-1.0</property>
+    <property name="FLOAT" type="Float">-1.0</property>
+    <property name="INTEGER" type="Integer">3</property>
+    <property name="LONG" type="Long">123</property>
+    <property name="SHORT" type="Short">-1024</property>
+    <property name="STRING" type="String">string</property>
+  </component>
+</container>

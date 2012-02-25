@@ -320,17 +320,20 @@ public class Builder {
 
 			if (!Modifier.isStatic(modifiers)) {
 				throw new IllegalArgumentException(
-						"property field must be static : " + fieldName);
+						"property field must be static : " + type + " / "
+								+ fieldName);
 			}
 
 			if (!Modifier.isFinal(modifiers)) {
 				throw new IllegalArgumentException(
-						"property field must be final : " + fieldName);
+						"property field must be final : " + type + " / "
+								+ fieldName);
 			}
 
-			if (!String.class.equals(field.getType())) {
+			if (!PropertyType.isValidType(field.getType())) {
 				throw new IllegalArgumentException(
-						"property field must be java.lang.String : "
+						"property field type must be one of : ["
+								+ PropertyType.getList() + "] " + type + " / "
 								+ fieldName + " / " + field.getType());
 			}
 
@@ -339,19 +342,20 @@ public class Builder {
 			final String name = Util.isValidText(anno.name()) ? anno.name()
 					: fieldName;
 
-			final String value;
+			final Object value;
 			try {
-				value = (String) field.get(null);
+				value = field.get(null);
 			} catch (final Exception e) {
 				throw new IllegalArgumentException(
-						"property annotated value is invalid : " + fieldName, e);
+						"property annotated value is invalid : " + type + " / "
+								+ fieldName, e);
 			}
 
 			final PropertyBean bean = new PropertyBean();
 
 			bean.name = name;
-			bean.type = PropertyType.STRING.value;
-			bean.value = value;
+			bean.type = PropertyType.from(value.getClass()).value;
+			bean.value = "" + value;
 
 			/** override if any */
 			component.propertySet.remove(bean);
