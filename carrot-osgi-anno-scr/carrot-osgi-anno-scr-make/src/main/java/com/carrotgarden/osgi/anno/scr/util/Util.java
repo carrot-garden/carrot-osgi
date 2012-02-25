@@ -88,6 +88,10 @@ public class Util {
 
 	}
 
+	/**
+	 * make sure : 1) bind/unbind names follow osgi spec; 2) have exactly one
+	 * argument of the same type
+	 */
 	public static void assertBindUnbindMatch(final Class<?> klaz,
 			final Class<?> type, final String bindName, final String unbindName) {
 
@@ -96,18 +100,28 @@ public class Util {
 		int bindCount = 0;
 		int unbindCount = 0;
 
+		Method methodBind = null;
+		Method methodUnbind = null;
+
 		for (final Method method : methodArray) {
 
 			final Class<?>[] paramArray = method.getParameterTypes();
 
-			if (method.getName().equals(bindName) && paramArray.length == 1
-					&& paramArray[0] == type) {
-				bindCount++;
-			}
+			final boolean isParamMatch = paramArray.length == 1
+					&& paramArray[0] == type;
 
-			if (method.getName().equals(unbindName) && paramArray.length == 1
-					&& paramArray[0] == type) {
-				unbindCount++;
+			if (isParamMatch) {
+
+				if (method.getName().equals(bindName)) {
+					methodBind = method;
+					bindCount++;
+				}
+
+				if (method.getName().equals(unbindName)) {
+					methodUnbind = method;
+					unbindCount++;
+				}
+
 			}
 
 		}
@@ -119,8 +133,8 @@ public class Util {
 		throw new IllegalArgumentException("mismatch : " + //
 				" klaz=" + klaz.getName() + //
 				" type=" + type.getName() + //
-				" bind=" + bindName + //
-				" unbind=" + unbindName + //
+				" bind=" + methodBind + //
+				" unbind=" + methodUnbind + //
 				"");
 
 	}

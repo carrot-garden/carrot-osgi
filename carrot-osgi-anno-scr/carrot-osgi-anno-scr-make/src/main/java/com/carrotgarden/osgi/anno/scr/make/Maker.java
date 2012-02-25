@@ -36,7 +36,8 @@ public class Maker {
 	}
 
 	/**
-	 * generate SCR xml descriptors
+	 * 
+	 * generate SCR xml descriptors; classes must be initialized
 	 * 
 	 * @return valid xml or null
 	 * 
@@ -61,6 +62,58 @@ public class Maker {
 				 */
 				continue;
 			}
+
+			klazList.add(klaz);
+
+		}
+
+		if (klazList.isEmpty()) {
+			return null;
+		}
+
+		final AggregatorBean bean = builder.makeAggregator(klazList);
+
+		return xstream.toXML(bean);
+
+	}
+
+	static final boolean INIT_NOT = false;
+	static final boolean INIT_YES = true;
+
+	/**
+	 * 
+	 * generate SCR xml descriptors; classes will be loaded and initialized as
+	 * needed
+	 * 
+	 * @return valid xml or null
+	 * 
+	 */
+	public String make(final ClassLoader loader, final String... nameArray)
+			throws Throwable {
+
+		final List<Class<?>> klazList = new LinkedList<Class<?>>();
+
+		for (final String name : nameArray) {
+
+			final Class<?> klaz = Class.forName(name, INIT_NOT, loader);
+
+			if (Util.isAbstract(klaz)) {
+				/**
+				 * abstract classes are processed as part of component
+				 * inheritance
+				 */
+				continue;
+			}
+
+			if (!Util.hasComponentAnno(klaz)) {
+				/**
+				 * interested in @Component annotated only
+				 */
+				continue;
+			}
+
+			/** force class hierarchy initialization */
+			Class.forName(name, INIT_YES, loader);
 
 			klazList.add(klaz);
 
