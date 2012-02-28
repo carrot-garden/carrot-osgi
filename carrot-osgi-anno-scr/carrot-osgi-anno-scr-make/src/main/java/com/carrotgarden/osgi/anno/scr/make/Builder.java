@@ -3,6 +3,7 @@ package com.carrotgarden.osgi.anno.scr.make;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -38,7 +39,12 @@ public class Builder {
 	private final Set<String> unwantedServiceSet;
 
 	public Builder(final Set<String> unwantedServiceSet) {
-		this.unwantedServiceSet = unwantedServiceSet;
+		if (unwantedServiceSet == null) {
+			this.unwantedServiceSet = new HashSet<String>();
+		} else {
+			this.unwantedServiceSet = unwantedServiceSet;
+		}
+
 	}
 
 	public AggregatorBean makeAggregator(final List<Class<?>> klazList) {
