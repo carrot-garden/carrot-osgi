@@ -1,4 +1,4 @@
 ## info
 
-varous OSGi related projects
+various OSGi related projects
 
