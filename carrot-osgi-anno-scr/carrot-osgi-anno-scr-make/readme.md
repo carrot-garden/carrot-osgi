@@ -1,10 +1,10 @@
-### this
+### info
 
 this is an annotation processor for the new 
 [RFC 0172 Declarative Services Annotations (p 187)]
 (http://www.osgi.org/download/osgi-early-draft-2011-09.pdf).
 
-### info
+### more
 
 learn more:
 [CarrotGarden SCR]
