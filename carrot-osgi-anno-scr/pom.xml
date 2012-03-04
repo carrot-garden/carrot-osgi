@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.carrotgarden.osgi</groupId>
 		<artifactId>carrot-osgi</artifactId>
-		<version>1.1.1</version>
+		<version>1.1.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>carrot-osgi-anno-scr</artifactId>
@@ -22,5 +22,32 @@
 		<module>carrot-osgi-anno-scr-core</module>
 		<module>carrot-osgi-anno-scr-make</module>
 	</modules>
+
+	<build>
+
+		<testResources>
+			<testResource>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</testResource>
+		</testResources>
+
+		<plugins>
+
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<entry>src/test/java/**/*.xml</entry>
+					</excludes>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+	</build>
 
 </project>

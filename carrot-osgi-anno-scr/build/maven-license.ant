@@ -14,7 +14,9 @@
 	<target name="maven">
 		<exec executable="mvn">
 			<arg value="clean" />
-			<arg value="package" />
+			<arg value="process-resources" />
+			<arg value="--activate-profiles" />
+			<arg value="license" />
 		</exec>
 	</target>
 
