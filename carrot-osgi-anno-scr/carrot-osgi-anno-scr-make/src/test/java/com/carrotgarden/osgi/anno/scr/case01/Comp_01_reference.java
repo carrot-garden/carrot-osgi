@@ -7,6 +7,10 @@
  */
 package com.carrotgarden.osgi.anno.scr.case01;
 
+import java.awt.event.ActionListener;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -19,6 +23,8 @@ public class Comp_01_reference implements Runnable {
 
 	}
 
+	//
+
 	private Comparable<?> comparator;
 
 	@Reference
@@ -27,6 +33,37 @@ public class Comp_01_reference implements Runnable {
 	}
 
 	protected void unbind(final Comparable<?> comparator) {
+
+	}
+
+	//
+
+	private ActionListener listener;
+
+	@Reference
+	protected void addListener(final ActionListener listener) {
+
+	}
+
+	protected void removeListener(final ActionListener listener) {
+
+	}
+
+	//
+
+	/**
+	 * <a href="https://github.com/carrot-garden/carrot-osgi/issues/1">Bind
+	 * Method Signature must accept 2 parameters</a>
+	 */
+
+	private Callable<?> caller;
+
+	@Reference
+	protected void bind(final Callable<?> caller, final Map<?, ?> params) {
+
+	}
+
+	protected void unbind(final Callable<?> caller, final Map<?, ?> params) {
 
 	}
 

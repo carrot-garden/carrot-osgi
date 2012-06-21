@@ -57,23 +57,71 @@ public class Util {
 		return array != null && array.length > 0;
 	}
 
+	/**
+	 * 112.3.1
+	 * 
+	 * When using the event strategy, the bind and unbind methods must have one
+	 * of the following proto-types:
+	 * 
+	 * void <method-name>(ServiceReference);
+	 * 
+	 * void <method-name>(<parameter-type>);
+	 * 
+	 * void <method-name>(<parameter-type>, Map);
+	 * 
+	 * A suitable method is selected using the following priority:
+	 * 
+	 * 1. The method takes a single argument and the type of the argument is
+	 * org.osgi.framework.ServiceReference.
+	 * 
+	 * 2. The method takes a single argument and the type of the argument is the
+	 * type specified by the reference’s interface attribute.
+	 * 
+	 * 3. The method takes a single argument and the type of the argument is
+	 * assignable from the type specified by the reference’s interface
+	 * attribute. If multiple methods match this rule, this implies the method
+	 * name is overloaded and SCR may choose any of the methods to call.
+	 * 
+	 * 4. The method takes two argument and the type of the first argument is
+	 * the type specified by the reference’s interface attribute and the type of
+	 * the second argument is java.util.Map.
+	 * 
+	 * 5. The method takes two argument and the type of the first argument is
+	 * assignable from the type specified by the reference’s interface attribute
+	 * and the type of the second argument is java.util.Map. If multiple methods
+	 * match this rule, this implies the method name is overloaded and SCR may
+	 * choose any of the methods to call.
+	 */
 	public static boolean isValidBindParam(final Class<?>[] paramArray) {
 
 		if (paramArray == null) {
 			return false;
 		}
 
-		if (paramArray.length != 1) {
+		switch (paramArray.length) {
+
+		case 0:
+			return false;
+
+		case 1:
+			if (paramArray[0].isInterface()) {
+				return true;
+			} else {
+				return false;
+			}
+
+		case 2:
+			if (paramArray[0].isInterface()
+					&& java.util.Map.class.isAssignableFrom(paramArray[1])) {
+				return true;
+			} else {
+				return false;
+			}
+
+		default:
 			return false;
 		}
 
-		final Class<?> type = paramArray[0];
-
-		if (!type.isInterface()) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/** using first parameter only */
@@ -96,16 +144,16 @@ public class Util {
 	}
 
 	/**
-	 * make sure : 1) bind/unbind names follow osgi spec; 2) have exactly one
-	 * argument of the same type
+	 * make sure : 1) bind/unbind names follow osgi spec; 2) have first argument
+	 * of the same type; 3) optional second argument is java.util.Map
 	 */
 	public static void assertBindUnbindMatch(final Class<?> klaz,
-			final Class<?> type, final String bindName, final String unbindName) {
+			final Class<?> type, final String nameBind, final String nameUnbind) {
 
 		final Method[] methodArray = klaz.getDeclaredMethods();
 
-		int bindCount = 0;
-		int unbindCount = 0;
+		int countBind = 0;
+		int countUnbind = 0;
 
 		Method methodBind = null;
 		Method methodUnbind = null;
@@ -114,26 +162,38 @@ public class Util {
 
 			final Class<?>[] paramArray = method.getParameterTypes();
 
-			final boolean isParamMatch = paramArray.length == 1
-					&& paramArray[0] == type;
+			final boolean isParamMatch;
+
+			switch (paramArray.length) {
+			default:
+			case 0:
+				continue;
+			case 1:
+				isParamMatch = paramArray[0] == type;
+				break;
+			case 2:
+				isParamMatch = paramArray[0] == type
+						&& java.util.Map.class.isAssignableFrom(paramArray[1]);
+				break;
+			}
 
 			if (isParamMatch) {
 
-				if (method.getName().equals(bindName)) {
+				if (method.getName().equals(nameBind)) {
 					methodBind = method;
-					bindCount++;
+					countBind++;
 				}
 
-				if (method.getName().equals(unbindName)) {
+				if (method.getName().equals(nameUnbind)) {
 					methodUnbind = method;
-					unbindCount++;
+					countUnbind++;
 				}
 
 			}
 
 		}
 
-		if (bindCount == 1 && unbindCount == 1) {
+		if (countBind == 1 && countUnbind == 1) {
 			return;
 		}
 
