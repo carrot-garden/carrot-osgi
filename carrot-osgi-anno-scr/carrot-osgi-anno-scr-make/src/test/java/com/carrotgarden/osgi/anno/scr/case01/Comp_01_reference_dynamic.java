@@ -21,6 +21,7 @@ public class Comp_01_reference_dynamic implements Runnable {
 
 	}
 
+	@SuppressWarnings("unused")
 	private Comparable<?> comparator;
 
 	@Reference( //

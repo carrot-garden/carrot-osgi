@@ -36,6 +36,7 @@ import com.carrotgarden.osgi.anno.scr.util.Util;
 
 public class Builder {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(Builder.class);
 
 	/**

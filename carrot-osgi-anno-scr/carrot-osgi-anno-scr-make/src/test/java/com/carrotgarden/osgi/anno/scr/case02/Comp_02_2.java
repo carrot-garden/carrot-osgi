@@ -26,7 +26,7 @@ service = { Callable.class, Callable.class, Callable.class, Comparable.class },
 property = { "override=level 2", "hello-2:Float=2.5" }
 //
 )
-public class Comp_02_2 extends Comp_02_1 implements Callable, Runnable,
+public class Comp_02_2 extends Comp_02_1 implements Callable<String>, Runnable,
 		Comparable<String>, Future<String> {
 
 	// should overrid level 1
@@ -39,7 +39,7 @@ public class Comp_02_2 extends Comp_02_1 implements Callable, Runnable,
 	}
 
 	@Override
-	public Object call() throws Exception {
+	public String call() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -17,6 +17,7 @@ public class ReferenceCardinalityConverter extends AbstractSingleValueConverter 
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean canConvert(final Class klaz) {
 

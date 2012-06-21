@@ -21,6 +21,7 @@ import com.thoughtworks.xstream.XStream;
 
 public class Maker {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(Maker.class);
 
 	private final XStream xstream;

@@ -25,6 +25,7 @@ public class Comp_01_reference implements Runnable {
 
 	//
 
+	@SuppressWarnings("unused")
 	private Comparable<?> comparator;
 
 	@Reference
@@ -38,6 +39,7 @@ public class Comp_01_reference implements Runnable {
 
 	//
 
+	@SuppressWarnings("unused")
 	private ActionListener listener;
 
 	@Reference
@@ -56,6 +58,7 @@ public class Comp_01_reference implements Runnable {
 	 * Method Signature must accept 2 parameters</a>
 	 */
 
+	@SuppressWarnings("unused")
 	private Callable<?> caller;
 
 	@Reference

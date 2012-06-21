@@ -21,6 +21,7 @@ public class Comp_01_factory implements Runnable {
 
 	}
 
+	@SuppressWarnings("unused")
 	private Comparable<?> comparator;
 
 	@Reference( //
