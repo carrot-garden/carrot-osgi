@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>com.carrotgarden.base</groupId>
 		<artifactId>carrot-archon</artifactId>
-		<version>1.4.0</version>
+		<version>1.4.2</version>
 		<relativePath />
 	</parent>
 
