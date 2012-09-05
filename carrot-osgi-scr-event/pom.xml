@@ -21,14 +21,14 @@
 
 	<groupId>com.carrotgarden.osgi</groupId>
 	<artifactId>carrot-osgi-scr-event</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.1</version>
 	<packaging>bundle</packaging>
 
 	<scm>
 		<url>https://github.com/carrot-garden/carrot-osgi</url>
 		<connection>scm:git:git://github.com/carrot-garden/carrot-osgi.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/carrot-garden/carrot-osgi.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>carrot-osgi-scr-event-1.1.1</tag>
 	</scm>
 
 	<properties>
