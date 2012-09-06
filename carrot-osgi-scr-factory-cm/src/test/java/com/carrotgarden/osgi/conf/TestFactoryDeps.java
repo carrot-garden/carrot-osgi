@@ -65,7 +65,7 @@ public class TestFactoryDeps extends TestAny {
 		assertTrue(manager.hasInstance(service1.instanceId()));
 
 		switcher.disable(TidgetDependencyImpl.NAME);
-		Thread.sleep(300);
+		Thread.sleep(400);
 
 		assertTrue("must have", manager.hasConfig(instanceId));
 
