@@ -38,7 +38,7 @@ public class TestMultiton extends TestAny {
 		assertTrue("start with no persistent configuration for the factory",
 				configAdmin.listMultiton(factoryId).isEmpty());
 
-		final String pid = configAdmin.multitonCreate(factoryId);
+		final String pid = configAdmin.multitonCreate(factoryId, null);
 		Thread.sleep(200);
 
 		assertTrue("should have persistent component configuration now",

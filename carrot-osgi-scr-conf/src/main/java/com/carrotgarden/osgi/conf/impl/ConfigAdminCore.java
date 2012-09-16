@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.conf.api.ConfigAdminService;
 
-public class ConfigAdminBase {
+public class ConfigAdminCore {
 
 	protected final static Map<String, String> EMPTY_PROPS = //
 	Collections.emptyMap();
@@ -36,7 +36,7 @@ public class ConfigAdminBase {
 
 	private ComponentContext context;
 
-	final Logger log = LoggerFactory.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	protected String adminCreate(final String factoryId,
 			final Map<String, String> props) {
@@ -53,7 +53,7 @@ public class ConfigAdminBase {
 
 		} catch (final Exception e) {
 
-			log.error("failed to create component", e);
+			log.error("failed to create config", e);
 
 			return ConfigAdminService.INVALID_PID;
 
@@ -72,7 +72,7 @@ public class ConfigAdminBase {
 			return true;
 
 		} catch (final Exception e) {
-			log.error("failed to delete component", e);
+			log.error("failed to delete config", e);
 			return false;
 		}
 
@@ -98,7 +98,7 @@ public class ConfigAdminBase {
 
 		} catch (final Exception e) {
 
-			log.error("failed to list configurations", e);
+			log.error("failed to list config", e);
 
 			return Collections.emptyList();
 
@@ -119,7 +119,7 @@ public class ConfigAdminBase {
 
 		} catch (final Exception e) {
 
-			log.error("failed to update component ", e);
+			log.error("failed to update config ", e);
 
 			return false;
 

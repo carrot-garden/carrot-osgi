@@ -59,6 +59,7 @@ public interface ConfigAdminService {
 	 */
 	boolean isPresent(String servicePid);
 
+	/** not {@link #INVALID_PID} */
 	boolean isValid(String servicePid);
 
 	/** PID list of all components with persistent configurations */
@@ -76,18 +77,11 @@ public interface ConfigAdminService {
 	/**
 	 * use with {@link ConfigurationPolicy.REQUIRE} components
 	 * 
-	 * make new component instance; calls src.activate();
-	 * 
-	 * @return new servicePid = factoryId.{random guid} OR {@link #INVALID_PID}
-	 *         for error conditions
-	 */
-	String multitonCreate(String factoryId);
-
-	/**
-	 * use with {@link ConfigurationPolicy.REQUIRE} components
-	 * 
 	 * make new component instance; calls src.activate() with provided
 	 * properties;
+	 * 
+	 * @param factoryId
+	 *            - component.name
 	 * 
 	 * @return new servicePid = factoryId.{random guid} OR {@link #INVALID_PID}
 	 *         for error conditions
@@ -101,6 +95,9 @@ public interface ConfigAdminService {
 	 * 
 	 * calls scr.deactivate(); then remove persistent configuration; the
 	 * component is gone after this;
+	 * 
+	 * @param servicePid
+	 *            - result of {@link #multitonCreate(String, Map)}
 	 */
 	boolean multitonDestroy(String servicePid);
 
@@ -110,6 +107,9 @@ public interface ConfigAdminService {
 	 * change persisted configuration for a multiton
 	 * 
 	 * calls scr.modified() with provided properties;
+	 * 
+	 * @param servicePid
+	 *            - result of {@link #multitonCreate(String, Map)}
 	 */
 	boolean multitonUpdate(String servicePid, Map<String, String> properties);
 
@@ -117,30 +117,46 @@ public interface ConfigAdminService {
 	 * use with {@link ConfigurationPolicy.REQUIRE} components;
 	 * 
 	 * create persistent configuration; calls src.activate();
+	 * 
+	 * @param servicePid
+	 *            - {@link #ComponentConstants.COMPONENT_NAME}
 	 */
 	boolean singletonCreate(String servicePid, Map<String, String> properties);
 
 	/**
-	 * use with {@link ConfigurationPolicy.REQUIRE} components
+	 * use with {@link ConfigurationPolicy.REQUIRE} components;
 	 * 
-	 * calls src.deactivate(); remove persistent configuration
+	 * calls src.deactivate(); remove persistent configuration;
+	 * 
+	 * @param servicePid
+	 *            - {@link #ComponentConstants.COMPONENT_NAME}
 	 */
 	boolean singletonDestroy(String servicePid);
 
 	/**
-	 * use with {@link ConfigurationPolicy.OPTIONAL} components
+	 * use with {@link ConfigurationPolicy.REQUIRE} components;
 	 * 
-	 * remove persisted configuration for a singleton
+	 * use with {@link ConfigurationPolicy.OPTIONAL} components;
 	 * 
-	 * calls scr.modified() with empty props;
-	 */
-	boolean singletonRemove(String servicePid);
-
-	/**
 	 * change persisted configuration for a singleton
 	 * 
 	 * calls scr.modified() with provided properties;
+	 * 
+	 * @param servicePid
+	 *            - {@link #ComponentConstants.COMPONENT_NAME}
 	 */
 	boolean singletonUpdate(String servicePid, Map<String, String> properties);
+
+	/**
+	 * use with {@link ConfigurationPolicy.OPTIONAL} components;
+	 * 
+	 * remove persisted configuration for a singleton;
+	 * 
+	 * calls scr.modified() with empty props;
+	 * 
+	 * @param servicePid
+	 *            - {@link #ComponentConstants.COMPONENT_NAME}
+	 */
+	boolean singletonRemove(String servicePid);
 
 }

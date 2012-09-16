@@ -19,14 +19,14 @@ import org.osgi.service.component.annotations.Component;
 import com.carrotgarden.osgi.conf.api.ConfigAdminService;
 
 @Component
-public class ConfigAdminServiceProvider extends ConfigAdminBase implements
+public class ConfigAdminServiceProvider extends ConfigAdminCore implements
 		ConfigAdminService {
 
 	@Override
 	public boolean isPresent(final String servicePid) {
 
 		final String filter = //
-		"(" + Constants.SERVICE_PID + "=" + servicePid + "*" + ")";
+		"(" + Constants.SERVICE_PID + "=" + servicePid + ")";
 
 		return adminSearch(filter).size() > 0;
 
@@ -34,7 +34,7 @@ public class ConfigAdminServiceProvider extends ConfigAdminBase implements
 
 	@Override
 	public boolean isValid(final String servicePid) {
-		return INVALID_PID != servicePid;
+		return servicePid != null && servicePid != INVALID_PID;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ConfigAdminServiceProvider extends ConfigAdminBase implements
 	public List<String> listMultiton(final String factoryId) {
 
 		final String filter = //
-		"(" + Constants.SERVICE_PID + "=" + factoryId + "*" + ")";
+		"(" + Constants.SERVICE_PID + "=" + factoryId + ".*" + ")";
 
 		return adminSearch(filter);
 
@@ -87,13 +87,6 @@ public class ConfigAdminServiceProvider extends ConfigAdminBase implements
 		}
 
 		return list;
-	}
-
-	@Override
-	public String multitonCreate(final String factoryId) {
-
-		return adminCreate(factoryId, EMPTY_PROPS);
-
 	}
 
 	@Override
