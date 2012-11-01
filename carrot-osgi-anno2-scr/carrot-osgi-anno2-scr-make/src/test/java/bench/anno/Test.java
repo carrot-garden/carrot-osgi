@@ -66,7 +66,7 @@ public class Test {
 				System.out.println("Annotation attribute pairs : "
 						+ annoNode.values);
 
-				final AnnotationVisitor visitor = new AnnotationVisitor() {
+				final AnnotationVisitor visitor = new AnnotationVisitor(0) {
 					@Override
 					public void visit(final String arg0, final Object arg1) {
 
