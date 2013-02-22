@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * @see Component
  * 
  */
-@Retention(value = RetentionPolicy.RUNTIME)
+@Retention(value = RetentionPolicy.CLASS)
 @Target(value = ElementType.FIELD)
 public @interface Property {
 

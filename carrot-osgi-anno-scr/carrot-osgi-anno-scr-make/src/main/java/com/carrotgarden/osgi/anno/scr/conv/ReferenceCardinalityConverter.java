@@ -11,6 +11,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.carrotgarden.osgi.anno.scr.util.Util;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 public class ReferenceCardinalityConverter extends AbstractSingleValueConverter {
@@ -29,15 +30,14 @@ public class ReferenceCardinalityConverter extends AbstractSingleValueConverter 
 
 		final ReferenceCardinality cardinality = (ReferenceCardinality) instance;
 
-		return cardinality.value;
+		return cardinality.toString();
 
 	}
 
 	@Override
 	public Object fromString(final String value) {
 
-		final ReferenceCardinality cardinality = ReferenceCardinality
-				.from(value);
+		final ReferenceCardinality cardinality = Util.fromReferenceCardinality(value); 
 
 		return cardinality;
 
