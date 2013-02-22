@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>com.carrotgarden.osgi</groupId>
 		<artifactId>carrot-osgi-anno-scr</artifactId>
-		<version>1.1.4-SNAPSHOT</version>
+		<version>1.1.4</version>
 	</parent>
 
 	<artifactId>carrot-osgi-anno-scr-make</artifactId>
