@@ -1,5 +1,5 @@
 <container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
-  <component name="com.carrotgarden.osgi.anno.scr.case03.Comp_03_1_props" enabled="true" immediate="false" configuration-policy="optional">
+  <component name="com.carrotgarden.osgi.anno.scr.case03.Comp_03_1_props">
     <implementation class="com.carrotgarden.osgi.anno.scr.case03.Comp_03_1_props"/>
     <property name="BOOL" type="Boolean">true</property>
     <property name="BYTE" type="Byte">-1</property>

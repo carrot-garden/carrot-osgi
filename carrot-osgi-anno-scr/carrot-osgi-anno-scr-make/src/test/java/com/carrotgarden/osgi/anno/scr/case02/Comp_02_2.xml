@@ -1,7 +1,7 @@
 <container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
-  <component name="com.carrotgarden.osgi.anno.scr.case02.Comp_02_2" enabled="true" immediate="false" configuration-policy="optional" activate="activate2" deactivate="deactivate1" modified="modified1">
+  <component name="com.carrotgarden.osgi.anno.scr.case02.Comp_02_2" activate="activate2" deactivate="deactivate1" modified="modified1">
     <implementation class="com.carrotgarden.osgi.anno.scr.case02.Comp_02_2"/>
-    <service servicefactory="false">
+    <service>
       <provide interface="java.lang.Comparable"/>
       <provide interface="java.util.concurrent.Callable"/>
     </service>
@@ -16,13 +16,13 @@
     <property name="wrong" type="String">wrong type</property>
     <properties entry="OSGI-INF/hello.properties"/>
     <properties entry="brand/system.properties"/>
-    <reference name="java.lang.CharSequence/*" interface="java.lang.CharSequence" cardinality="1..1" policy="static" bind="bind" unbind="unbind"/>
-    <reference name="java.lang.Cloneable/*" interface="java.lang.Cloneable" cardinality="1..1" policy="static" bind="add" unbind="remove"/>
-    <reference name="java.lang.Comparable/*" interface="java.lang.Comparable" cardinality="1..1" policy="static" bind="comp" unbind="uncomp"/>
-    <reference name="java.lang.Runnable/*" interface="java.lang.Runnable" cardinality="1..1" policy="static" bind="make" unbind="unmake"/>
-    <reference name="java.util.concurrent.Callable/*" interface="java.util.concurrent.Callable" cardinality="1..1" policy="static" bind="set" unbind="unset"/>
-    <reference name="java.util.concurrent.Executor/*" interface="java.util.concurrent.Executor" cardinality="1..1" policy="static" bind="addSomeThing" unbind="removeSomeThing"/>
-    <reference name="java.util.concurrent.Future/*" interface="java.util.concurrent.Future" cardinality="1..1" policy="static" bind="bindSome" unbind="unbindSome"/>
-    <reference name="override" interface="java.lang.Runnable" cardinality="1..1" policy="static" bind="make" unbind="unmake"/>
+    <reference name="java.lang.CharSequence/*" interface="java.lang.CharSequence" bind="bind" unbind="unbind"/>
+    <reference name="java.lang.Cloneable/*" interface="java.lang.Cloneable" bind="add" unbind="remove"/>
+    <reference name="java.lang.Comparable/*" interface="java.lang.Comparable" bind="comp" unbind="uncomp"/>
+    <reference name="java.lang.Runnable/*" interface="java.lang.Runnable" bind="make" unbind="unmake"/>
+    <reference name="java.util.concurrent.Callable/*" interface="java.util.concurrent.Callable" bind="set" unbind="unset"/>
+    <reference name="java.util.concurrent.Executor/*" interface="java.util.concurrent.Executor" bind="addSomeThing" unbind="removeSomeThing"/>
+    <reference name="java.util.concurrent.Future/*" interface="java.util.concurrent.Future" bind="bindSome" unbind="unbindSome"/>
+    <reference name="override" interface="java.lang.Runnable" bind="make" unbind="unmake"/>
   </component>
 </container>

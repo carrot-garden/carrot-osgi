@@ -11,7 +11,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.carrotgarden.osgi.anno.scr.util.Util;
+import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 public class ReferenceCardinalityConverter extends AbstractSingleValueConverter {
@@ -37,7 +37,7 @@ public class ReferenceCardinalityConverter extends AbstractSingleValueConverter 
 	@Override
 	public Object fromString(final String value) {
 
-		final ReferenceCardinality cardinality = Util.fromReferenceCardinality(value); 
+		final ReferenceCardinality cardinality = UtilEnum.fromReferenceCardinality(value); 
 
 		return cardinality;
 

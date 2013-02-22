@@ -1,11 +1,11 @@
 <container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
-  <component name="com.carrotgarden.osgi.anno.scr.case01.Comp_01_reference" enabled="true" immediate="false" configuration-policy="optional">
+  <component name="com.carrotgarden.osgi.anno.scr.case01.Comp_01_reference">
     <implementation class="com.carrotgarden.osgi.anno.scr.case01.Comp_01_reference"/>
-    <service servicefactory="false">
+    <service>
       <provide interface="java.lang.Runnable"/>
     </service>
-    <reference name="java.awt.event.ActionListener/*" interface="java.awt.event.ActionListener" cardinality="1..1" policy="static" bind="addListener" unbind="removeListener"/>
-    <reference name="java.lang.Comparable/*" interface="java.lang.Comparable" cardinality="1..1" policy="static" bind="bind" unbind="unbind"/>
-    <reference name="java.util.concurrent.Callable/*" interface="java.util.concurrent.Callable" cardinality="1..1" policy="static" bind="bind" unbind="unbind"/>
+    <reference name="java.awt.event.ActionListener/*" interface="java.awt.event.ActionListener" bind="addListener" unbind="removeListener"/>
+    <reference name="java.lang.Comparable/*" interface="java.lang.Comparable" bind="bind" unbind="unbind"/>
+    <reference name="java.util.concurrent.Callable/*" interface="java.util.concurrent.Callable" bind="bind" unbind="unbind"/>
   </component>
 </container>

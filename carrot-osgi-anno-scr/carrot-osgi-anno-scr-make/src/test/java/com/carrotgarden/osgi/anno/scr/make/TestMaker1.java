@@ -44,7 +44,7 @@ public class TestMaker1 {
 		}
 	}
 
-	static void testClass(final Class<?> klaz) {
+	static void testClass(final Class<?> klaz) throws Throwable {
 
 		log.debug("######################################");
 		log.debug("test class : {}", klaz.getName());
@@ -64,7 +64,7 @@ public class TestMaker1 {
 	}
 
 	@Test
-	public void test01() {
+	public void test01() throws Throwable {
 
 		testClass(Comp_01_empty.class);
 
@@ -81,7 +81,7 @@ public class TestMaker1 {
 	}
 
 	@Test
-	public void test02() {
+	public void test02() throws Throwable {
 
 		testClass(Comp_02_0.class); // missing
 
@@ -94,7 +94,7 @@ public class TestMaker1 {
 	}
 
 	@Test
-	public void test03() {
+	public void test03() throws Throwable {
 
 		testClass(Comp_03_1_props.class);
 

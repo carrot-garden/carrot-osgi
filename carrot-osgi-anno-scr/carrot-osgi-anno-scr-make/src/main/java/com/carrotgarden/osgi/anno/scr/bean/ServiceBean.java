@@ -21,7 +21,7 @@ public class ServiceBean implements BeanAcceptor {
 
 	@XStreamAsAttribute
 	@XStreamAlias("servicefactory")
-	public boolean servicefactory = false;
+	public Boolean servicefactory;
 
 	@XStreamImplicit(itemFieldName = "provide")
 	public Set<ProvideBean> provideSet = new TreeSet<ProvideBean>();

@@ -16,7 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.bean.AggregatorBean;
-import com.carrotgarden.osgi.anno.scr.util.Util;
+import com.carrotgarden.osgi.anno.scr.util.UtilAsm;
+import com.carrotgarden.osgi.anno.scr.util.UtilJdk;
 import com.thoughtworks.xstream.XStream;
 
 public class Maker {
@@ -48,15 +49,16 @@ public class Maker {
 	 * generate SCR xml descriptors; classes must be initialized
 	 * 
 	 * @return valid xml or null
+	 * @throws Exception
 	 * 
 	 */
-	public String make(final Class<?>... klazArray) {
+	public String make(final Class<?>... klazArray) throws Exception {
 
 		final List<Class<?>> klazList = new LinkedList<Class<?>>();
 
 		for (final Class<?> klaz : klazArray) {
 
-			if (Util.isAbstract(klaz)) {
+			if (UtilJdk.isAbstract(klaz)) {
 				/**
 				 * abstract classes are processed as part of component
 				 * inheritance
@@ -64,7 +66,7 @@ public class Maker {
 				continue;
 			}
 
-			if (!Util.hasComponentAnno(klaz)) {
+			if (!UtilAsm.hasComponentAnno(klaz)) {
 				/**
 				 * interested in @Component annotated only
 				 */
@@ -105,7 +107,7 @@ public class Maker {
 
 			final Class<?> klaz = Class.forName(name, INIT_NOT, loader);
 
-			if (Util.isAbstract(klaz)) {
+			if (UtilJdk.isAbstract(klaz)) {
 				/**
 				 * abstract classes are processed as part of component
 				 * inheritance
@@ -113,7 +115,7 @@ public class Maker {
 				continue;
 			}
 
-			if (!Util.hasComponentAnno(klaz)) {
+			if (!UtilAsm.hasComponentAnno(klaz)) {
 				/**
 				 * interested in @Component annotated only
 				 */

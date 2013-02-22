@@ -14,6 +14,12 @@
 	<artifactId>carrot-osgi-anno-scr-make</artifactId>
 	<packaging>bundle</packaging>
 
+	<properties>
+
+		<projectAsmVersion>4.1</projectAsmVersion>
+
+	</properties>
+
 	<dependencies>
 
 		<!-- use standard first, override with custom -->
@@ -37,6 +43,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -47,6 +54,26 @@
 			<artifactId>logback-classic</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- byte code editor -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>${projectAsmVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-tree</artifactId>
+			<version>${projectAsmVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.ow2.asm</groupId> -->
+<!-- 			<artifactId>asm-commons</artifactId> -->
+<!-- 			<version>${projectAsmVersion}</version> -->
+<!-- 			<scope>provided</scope> -->
+<!-- 		</dependency> -->
 
 	</dependencies>
 

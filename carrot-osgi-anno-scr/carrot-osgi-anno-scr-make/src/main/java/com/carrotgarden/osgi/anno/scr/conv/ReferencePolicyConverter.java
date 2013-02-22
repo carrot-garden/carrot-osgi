@@ -11,7 +11,7 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.carrotgarden.osgi.anno.scr.util.Util;
+import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 public class ReferencePolicyConverter extends AbstractSingleValueConverter {
@@ -37,7 +37,7 @@ public class ReferencePolicyConverter extends AbstractSingleValueConverter {
 	@Override
 	public Object fromString(final String value) {
 
-		final ReferencePolicy policy = Util.fromReferencePolicy(value);
+		final ReferencePolicy policy = UtilEnum.fromReferencePolicy(value);
 
 		return policy;
 

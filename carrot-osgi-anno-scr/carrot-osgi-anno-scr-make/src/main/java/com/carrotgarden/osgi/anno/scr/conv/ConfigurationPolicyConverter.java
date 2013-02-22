@@ -11,7 +11,7 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.carrotgarden.osgi.anno.scr.util.Util;
+import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 public class ConfigurationPolicyConverter extends AbstractSingleValueConverter {
@@ -39,7 +39,7 @@ public class ConfigurationPolicyConverter extends AbstractSingleValueConverter {
 	@Override
 	public Object fromString(final String value) {
 
-		final ConfigurationPolicy policy = Util.fromConfigurationPolicy(value);
+		final ConfigurationPolicy policy = UtilEnum.fromConfigurationPolicy(value);
 
 		return policy;
 

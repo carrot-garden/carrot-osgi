@@ -1,5 +1,5 @@
 <container xmlns="http://www.osgi.org/xmlns/scr/v1.1.0">
-  <component name="comp name" enabled="true" immediate="false" configuration-policy="optional">
+  <component name="comp name">
     <implementation class="com.carrotgarden.osgi.anno.scr.case01.Comp_01_with_name"/>
   </component>
 </container>

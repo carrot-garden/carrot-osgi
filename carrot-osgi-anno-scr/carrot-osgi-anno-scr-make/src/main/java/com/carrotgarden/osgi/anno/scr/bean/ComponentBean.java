@@ -29,7 +29,7 @@ public class ComponentBean implements BeanAcceptor {
 
 	@XStreamAsAttribute
 	@XStreamAlias("enabled")
-	public boolean enabled = true;
+	public Boolean enabled;
 
 	@XStreamAsAttribute
 	@XStreamAlias("factory")
@@ -37,12 +37,12 @@ public class ComponentBean implements BeanAcceptor {
 
 	@XStreamAsAttribute
 	@XStreamAlias("immediate")
-	public boolean immediate = false;
+	public Boolean immediate;
 
 	@XStreamAsAttribute
 	@XStreamAlias("configuration-policy")
 	@XStreamConverter(ConfigurationPolicyConverter.class)
-	public ConfigurationPolicy policy;
+	public ConfigurationPolicy configPolicy;
 
 	//
 

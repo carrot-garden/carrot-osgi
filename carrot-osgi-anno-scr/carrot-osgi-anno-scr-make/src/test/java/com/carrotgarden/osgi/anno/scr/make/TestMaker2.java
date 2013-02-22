@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.carrotgarden.osgi.anno.scr.case03.Comp_03_1_props;
+
 public class TestMaker2 {
 
 	static final Logger log = LoggerFactory.getLogger(TestMaker2.class);
@@ -86,6 +88,15 @@ public class TestMaker2 {
 		testClass(pack + "Comp_02_2");
 
 		testClass(pack + "Comp_02_3"); // missing
+
+	}
+
+	@Test
+	public void test03() throws Throwable {
+
+		final String pack = "com.carrotgarden.osgi.anno.scr.case03.";
+
+		testClass(pack + "Comp_03_1_props");
 
 	}
 
