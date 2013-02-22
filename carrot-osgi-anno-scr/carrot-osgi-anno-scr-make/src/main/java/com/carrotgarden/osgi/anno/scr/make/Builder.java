@@ -50,14 +50,18 @@ import com.carrotgarden.osgi.anno.scr.util.Util;
 import com.carrotgarden.osgi.anno.scr.util.UtilJdk;
 import com.carrotgarden.osgi.anno.scr.util.UtilAsm;
 
+/**
+ * Xstream bean builder.
+ */
 public class Builder {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(Builder.class);
 
 	/**
-	 * names of interfaces that should be excluded from
-	 * 
+	 * Names of interfaces that should be excluded from
+	 * {@link Component#service()}
+	 * <p>
 	 * <provide interface="..."/>
 	 */
 	private final Set<String> unwantedServiceSet;
@@ -71,150 +75,9 @@ public class Builder {
 
 	}
 
-	public AggregatorBean makeAggregator(final List<Class<?>> klazList)
-			throws Exception {
-
-		final AggregatorBean aggregator = new AggregatorBean();
-
-		for (final Class<?> klaz : klazList) {
-			aggregator.componentList.add(makeComponent(klaz));
-		}
-
-		return aggregator;
-
-	}
-
 	/**
-	 * super class annotations are overridden by derived classes in the type
-	 * hierarchy
-	 * 
-	 * @throws IOException
+	 * Build {@link ComponentBean}.
 	 */
-	private ComponentBean makeComponent(final Class<?> klaz) throws Exception {
-
-		final ComponentBean bean = new ComponentBean();
-
-		final List<Class<?>> typeList = UtilJdk.inheritanceList(klaz);
-
-		for (final Class<?> type : typeList) {
-
-			final ClassNode node = UtilAsm.makeClassNode(type);
-
-			applyServiceInferred(bean, type);
-
-			applyPropertyEmbedded(bean, type, node);
-
-			applyReference(bean, type, node);
-
-			applyLifecycle(bean, type, node);
-
-			// keep last
-			applyComponent(bean, type, node);
-
-		}
-
-		finalizeProvidedServices(bean);
-
-		return bean;
-
-	}
-
-	/**
-	 * Collect component life cycle annotations.
-	 */
-	private void applyLifecycle(final ComponentBean bean, final Class<?> type,
-			final ClassNode classNode) {
-
-		int countActivate = 0;
-		int countDeactivate = 0;
-		int countModified = 0;
-
-		@SuppressWarnings("unchecked")
-		final List<MethodNode> mothodList = classNode.methods;
-
-		for (final MethodNode methodNode : mothodList) {
-
-			final String methodName = methodNode.name;
-
-			@SuppressWarnings("unchecked")
-			final List<AnnotationNode> annoList = methodNode.invisibleAnnotations;
-
-			if (annoList == null || annoList.isEmpty()) {
-				continue;
-			}
-
-			for (AnnotationNode annoNode : annoList) {
-
-				final String annoDesc = annoNode.desc;
-
-				if (UtilAsm.isActivateDesc(annoDesc)) {
-					bean.activate = methodName;
-					countActivate++;
-				}
-
-				if (UtilAsm.isDeactivateDesc(annoDesc)) {
-					bean.deactivate = methodName;
-					countDeactivate++;
-				}
-
-				if (UtilAsm.isModifiedDesc(annoDesc)) {
-					bean.modified = methodName;
-					countModified++;
-				}
-
-			}
-
-		}
-
-		if (countActivate > 1) {
-			throw new IllegalStateException("duplicate @Activate in class : "
-					+ type);
-		}
-
-		if (countDeactivate > 1) {
-			throw new IllegalStateException("duplicate @Deactivate in class : "
-					+ type);
-		}
-
-		if (countModified > 1) {
-			throw new IllegalStateException("duplicate @Modified in class : "
-					+ type);
-		}
-
-	}
-
-	/**
-	 * cleanup and discard unwanted service interfaces
-	 */
-	private void finalizeProvidedServices(final ComponentBean bean) {
-
-		if (bean.service.provideSet.isEmpty()) {
-			bean.service = null;
-			return;
-		}
-
-		if (unwantedServiceSet.isEmpty()) {
-			return;
-		}
-
-		final Set<ProvideBean> provideSet = new TreeSet<ProvideBean>();
-
-		for (final ProvideBean provide : bean.service.provideSet) {
-			if (unwantedServiceSet.contains(provide.type)) {
-				continue; // ignore
-			} else {
-				provideSet.add(provide);
-			}
-		}
-
-		if (provideSet.isEmpty()) {
-			bean.service = null;
-		} else {
-			bean.service.provideSet = provideSet;
-		}
-
-	}
-
 	private void applyComponent(final ComponentBean component,
 			final Class<?> type, final ClassNode classNode) throws Exception {
 
@@ -277,110 +140,65 @@ public class Builder {
 	}
 
 	/**
-	 * Collect {@link Component#property()} entries.
+	 * Collect component life cycle annotations to {@link ComponentBean}.
 	 */
-	private void applyPropertyKeyValue(final ComponentBean bean,
-			final AnnotationNode annoNode, final Class<?> klaz) {
+	private void applyLifecycle(final ComponentBean component,
+			final Class<?> type, final ClassNode classNode) {
 
-		final List<String> entryList = UtilAsm.asStringList(annoNode,
-				"property");
+		int countActivate = 0;
+		int countDeactivate = 0;
+		int countModified = 0;
 
-		if (entryList == null || entryList.isEmpty()) {
-			return;
-		}
+		@SuppressWarnings("unchecked")
+		final List<MethodNode> mothodList = classNode.methods;
 
-		final String annoDesc = annoNode.desc;
+		for (final MethodNode methodNode : mothodList) {
 
-		for (String entry : entryList) {
+			final String methodName = methodNode.name;
 
-			if (!Util.isValidText(entry)) {
-				throw new IllegalStateException("property must not be empty : "
-						+ klaz + " / " + annoDesc);
+			@SuppressWarnings("unchecked")
+			final List<AnnotationNode> annoList = methodNode.invisibleAnnotations;
+
+			if (Util.isListNone(annoList)) {
+				continue;
 			}
 
-			if (!entry.contains("=")) {
-				throw new IllegalStateException("property must contain '=' : "
-						+ klaz + " / " + annoDesc);
-			}
+			for (AnnotationNode annoNode : annoList) {
 
-			final int indexEquals = entry.indexOf("=");
+				final String annoDesc = annoNode.desc;
 
-			final String nameType = entry.substring(0, indexEquals);
-
-			if (nameType.length() == 0) {
-				throw new IllegalStateException(
-						"property name must not be empty : " + klaz + " / "
-								+ annoDesc);
-			}
-
-			final String name;
-			final String type;
-
-			if (nameType.contains(":")) {
-
-				final int indexColon = nameType.indexOf(":");
-
-				name = nameType.substring(0, indexColon);
-				type = PropertyType.from(nameType.substring(indexColon + 1)).value;
-
-				if (name.length() == 0) {
-					throw new IllegalStateException(
-							"property name must not be empty : " + klaz + " / "
-									+ annoDesc);
+				if (UtilAsm.isActivateDesc(annoDesc)) {
+					component.activate = methodName;
+					countActivate++;
 				}
 
-			} else {
-				name = nameType;
-				type = PropertyType.STRING.value;
+				if (UtilAsm.isDeactivateDesc(annoDesc)) {
+					component.deactivate = methodName;
+					countDeactivate++;
+				}
+
+				if (UtilAsm.isModifiedDesc(annoDesc)) {
+					component.modified = methodName;
+					countModified++;
+				}
+
 			}
-
-			final String value = entry.substring(indexEquals + 1);
-
-			final PropertyBean propBean = new PropertyBean();
-
-			propBean.name = name;
-			propBean.type = type;
-			propBean.value = value;
-
-			/** no duplicates */
-			bean.propertySet.remove(propBean);
-			bean.propertySet.add(propBean);
 
 		}
 
-	}
-
-	/**
-	 * Collect {@link Component#properties()} entries.
-	 */
-	private void applyPropertyFileEntry(final ComponentBean bean,
-			final AnnotationNode annoNode, final Class<?> type) {
-
-		final List<String> entryList = UtilAsm.asStringList(annoNode,
-				"properties");
-
-		if (entryList == null || entryList.isEmpty()) {
-			return;
+		if (countActivate > 1) {
+			throw new IllegalStateException("duplicate @Activate in class : "
+					+ type);
 		}
 
-		final String annoDesc = annoNode.desc;
+		if (countDeactivate > 1) {
+			throw new IllegalStateException("duplicate @Deactivate in class : "
+					+ type);
+		}
 
-		for (final String entry : entryList) {
-
-			if (!Util.isValidText(entry)) {
-				throw new IllegalArgumentException(
-						"property file entry must not be empty : " + type
-								+ " / " + annoDesc);
-			}
-
-			final PropertyFileBean propBean = new PropertyFileBean();
-
-			propBean.entry = entry;
-
-			/** no duplicates */
-			bean.propertyFileSet.remove(propBean);
-			bean.propertyFileSet.add(propBean);
-
+		if (countModified > 1) {
+			throw new IllegalStateException("duplicate @Modified in class : "
+					+ type);
 		}
 
 	}
@@ -394,11 +212,11 @@ public class Builder {
 		@SuppressWarnings("unchecked")
 		final List<FieldNode> fieldList = node.fields;
 
-		if (fieldList == null || fieldList.isEmpty()) {
+		if (Util.isListNone(fieldList)) {
 			return;
 		}
 
-		for (FieldNode fieldNode : fieldList) {
+		for (final FieldNode fieldNode : fieldList) {
 
 			final AnnotationNode annoNode = UtilAsm.propertyAnno(fieldNode);
 
@@ -464,6 +282,156 @@ public class Builder {
 	}
 
 	/**
+	 * Collect {@link Component#properties()} entries.
+	 */
+	private void applyPropertyFileEntry(final ComponentBean bean,
+			final AnnotationNode annoNode, final Class<?> type) {
+
+		final List<String> entryList = UtilAsm.asStringList(annoNode,
+				"properties");
+
+		if (Util.isListNone(entryList)) {
+			return;
+		}
+
+		final String annoDesc = annoNode.desc;
+
+		for (final String entry : entryList) {
+
+			if (!Util.isValidText(entry)) {
+				throw new IllegalArgumentException(
+						"property file entry must not be empty : " + type
+								+ " / " + annoDesc);
+			}
+
+			final PropertyFileBean propBean = new PropertyFileBean();
+
+			propBean.entry = entry;
+
+			/** no duplicates */
+			bean.propertyFileSet.remove(propBean);
+			bean.propertyFileSet.add(propBean);
+
+		}
+
+	}
+
+	/**
+	 * Collect {@link Component#property()} entries.
+	 */
+	private void applyPropertyKeyValue(final ComponentBean bean,
+			final AnnotationNode annoNode, final Class<?> klaz) {
+
+		final List<String> entryList = UtilAsm.asStringList(annoNode,
+				"property");
+
+		if (Util.isListNone(entryList)) {
+			return;
+		}
+
+		final String annoDesc = annoNode.desc;
+
+		for (String entry : entryList) {
+
+			if (!Util.isValidText(entry)) {
+				throw new IllegalStateException("property must not be empty : "
+						+ klaz + " / " + annoDesc);
+			}
+
+			if (!entry.contains("=")) {
+				throw new IllegalStateException("property must contain '=' : "
+						+ klaz + " / " + annoDesc);
+			}
+
+			final int indexEquals = entry.indexOf("=");
+
+			final String nameType = entry.substring(0, indexEquals);
+
+			if (nameType.length() == 0) {
+				throw new IllegalStateException(
+						"property name must not be empty : " + klaz + " / "
+								+ annoDesc);
+			}
+
+			final String name;
+			final String type;
+
+			if (nameType.contains(":")) {
+
+				final int indexColon = nameType.indexOf(":");
+
+				name = nameType.substring(0, indexColon);
+				type = PropertyType.from(nameType.substring(indexColon + 1)).value;
+
+				if (name.length() == 0) {
+					throw new IllegalStateException(
+							"property name must not be empty : " + klaz + " / "
+									+ annoDesc);
+				}
+
+			} else {
+				name = nameType;
+				type = PropertyType.STRING.value;
+			}
+
+			final String value = entry.substring(indexEquals + 1);
+
+			final PropertyBean propBean = new PropertyBean();
+
+			propBean.name = name;
+			propBean.type = type;
+			propBean.value = value;
+
+			/** no duplicates */
+			bean.propertySet.remove(propBean);
+			bean.propertySet.add(propBean);
+
+		}
+
+	}
+
+	/**
+	 * Collect bind methods from {@link Reference} annotations.
+	 */
+	private void applyReference(final ComponentBean component,
+			final Class<?> type, ClassNode classNode) throws Exception {
+
+		@SuppressWarnings("unchecked")
+		final List<MethodNode> methodList = classNode.methods;
+
+		if (Util.isListNone(methodList)) {
+			return;
+		}
+
+		for (MethodNode methodNode : methodList) {
+
+			final AnnotationNode annoNode = UtilAsm.referenceAnno(methodNode);
+
+			if (annoNode == null) {
+				continue;
+			}
+
+			if (!UtilAsm.isValidBindParam(methodNode)) {
+				throw new IllegalStateException(
+						"invalid parameters for reference : " + methodNode.desc);
+			}
+
+			final ReferenceBean bean = makeReference(type, methodNode, annoNode);
+
+			final Set<ReferenceBean> referenceSet = component.referenceSet;
+
+			if (referenceSet.contains(bean)) {
+				throw new IllegalStateException("duplicate reference : "
+						+ methodNode.desc);
+			}
+
+			referenceSet.add(bean);
+
+		}
+
+	}
+
+	/**
 	 * Override collected service interfaces with explicit
 	 * {@link Component#service()} statement, if present.
 	 * 
@@ -476,7 +444,7 @@ public class Builder {
 		final List<Class<?>> serviceList = UtilAsm.asClassList(annoNode,
 				"service");
 
-		if (serviceList == null || serviceList.isEmpty()) {
+		if (Util.isListNone(serviceList)) {
 			return;
 		}
 
@@ -534,45 +502,84 @@ public class Builder {
 	}
 
 	/**
-	 * Collect bind methods.
-	 * 
-	 * @throws Exception
+	 * cleanup and discard unwanted service interfaces
 	 */
-	private void applyReference(final ComponentBean component,
-			final Class<?> type, ClassNode classNode) throws Exception {
+	private void finalizeProvidedServices(final ComponentBean bean) {
 
-		@SuppressWarnings("unchecked")
-		final List<MethodNode> methodList = classNode.methods;
-
-		if (methodList == null || methodList.isEmpty()) {
+		if (bean.service.provideSet.isEmpty()) {
+			bean.service = null;
 			return;
 		}
 
-		for (MethodNode methodNode : methodList) {
+		if (unwantedServiceSet.isEmpty()) {
+			return;
+		}
 
-			final AnnotationNode annoNode = UtilAsm.referenceAnno(methodNode);
+		final Set<ProvideBean> provideSet = new TreeSet<ProvideBean>();
 
-			if (annoNode == null) {
-				continue;
+		for (final ProvideBean provide : bean.service.provideSet) {
+			if (unwantedServiceSet.contains(provide.type)) {
+				continue; // ignore
+			} else {
+				provideSet.add(provide);
 			}
+		}
 
-			if (!UtilAsm.isValidBindParam(methodNode)) {
-				throw new IllegalStateException(
-						"invalid parameters for reference : " + methodNode.desc);
-			}
+		if (provideSet.isEmpty()) {
+			bean.service = null;
+		} else {
+			bean.service.provideSet = provideSet;
+		}
 
-			final ReferenceBean bean = makeReference(type, methodNode, annoNode);
+	}
 
-			final Set<ReferenceBean> referenceSet = component.referenceSet;
+	public AggregatorBean makeAggregator(final List<Class<?>> klazList)
+			throws Exception {
 
-			if (referenceSet.contains(bean)) {
-				throw new IllegalStateException("duplicate reference : "
-						+ methodNode.desc);
-			}
+		final AggregatorBean aggregator = new AggregatorBean();
 
-			referenceSet.add(bean);
+		for (final Class<?> klaz : klazList) {
+			aggregator.componentList.add(makeComponent(klaz));
+		}
+
+		return aggregator;
+
+	}
+
+	/**
+	 * Super class annotations are overridden by derived classes in the type
+	 * hierarchy.
+	 */
+	private ComponentBean makeComponent(final Class<?> klaz) throws Exception {
+
+		final ComponentBean bean = new ComponentBean();
+
+		final List<Class<?>> typeList = UtilJdk.inheritanceList(klaz);
+
+		if (Util.isListNone(typeList)) {
+			return bean;
+		}
+
+		for (final Class<?> type : typeList) {
+
+			final ClassNode node = UtilAsm.classNode(type);
+
+			applyServiceInferred(bean, type);
+
+			applyPropertyEmbedded(bean, type, node);
+
+			applyReference(bean, type, node);
+
+			applyLifecycle(bean, type, node);
+
+			// keep last
+			applyComponent(bean, type, node);
 
 		}
+
+		finalizeProvidedServices(bean);
+
+		return bean;
 
 	}
 
@@ -584,7 +591,7 @@ public class Builder {
 
 		final String bindName = bindMethod.name;
 
-		final String bindType = UtilAsm.bindParameter(bindMethod)
+		final String bindType = UtilAsm.firstParamType(bindMethod)
 				.getClassName();
 
 		//
@@ -592,7 +599,9 @@ public class Builder {
 		reference.type = bindType;
 
 		final String target = UtilAsm.asString(annoNode, "target");
-		reference.target = Util.isValidText(target) ? target : null;
+		if (target != null) {
+			reference.target = target;
+		}
 
 		/**
 		 * Name must be unique in a component.
@@ -600,10 +609,14 @@ public class Builder {
 		 * Use (interface type)/(target filter) combination.
 		 */
 		final String name = UtilAsm.asString(annoNode, "name");
-		final String nameType = bindType;
-		final String nameTarget = Util.isValidText(target) ? target : "*";
-		final String nameDefault = nameType + "/" + nameTarget;
-		reference.name = Util.isValidText(name) ? name : nameDefault;
+		if (name != null) {
+			reference.name = name;
+		} else {
+			final String nameType = bindType;
+			final String nameTarget = Util.isValidText(target) ? target : "*";
+			final String nameDefault = nameType + "/" + nameTarget;
+			reference.name = nameDefault;
+		}
 
 		final ReferenceCardinality cardinality = UtilAsm.asEnum(annoNode,
 				"cardinality");
@@ -622,8 +635,8 @@ public class Builder {
 
 		//
 
-		UtilJdk.assertBindUnbindMatch(type, bindType, reference.bind,
-				reference.unbind);
+		UtilJdk.assertBindUnbindMatch(//
+				type, bindType, reference.bind, reference.unbind);
 
 		return reference;
 

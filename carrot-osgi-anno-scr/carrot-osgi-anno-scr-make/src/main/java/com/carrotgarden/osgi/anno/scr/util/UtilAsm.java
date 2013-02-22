@@ -1,3 +1,10 @@
+/**
+ * Copyright (C) 2010-2013 Andrei Pozolotin <Andrei.Pozolotin@gmail.com>
+ *
+ * All rights reserved. Licensed under the OSI BSD License.
+ *
+ * http://www.opensource.org/licenses/bsd-license.php
+ */
 package com.carrotgarden.osgi.anno.scr.util;
 
 import java.util.ArrayList;
@@ -12,7 +19,7 @@ import org.objectweb.asm.tree.MethodNode;
 import org.osgi.service.component.annotations.*;
 
 /**
- * Utilities which rely on ASM reflection.
+ * DS utilities which rely on ASM reflection.
  */
 public class UtilAsm {
 
@@ -49,12 +56,15 @@ public class UtilAsm {
 	public static final int SKIP_MODE = ClassReader.SKIP_CODE
 			| ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES;
 
+	/**
+	 * Extract annotation value as {@link Boolean}.
+	 */
 	public static Boolean asBoolean(AnnotationNode node, String name) {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
 
-		if (entryList == null || entryList.isEmpty()) {
+		if (Util.isListNone(entryList)) {
 			return null;
 		}
 
@@ -70,13 +80,16 @@ public class UtilAsm {
 
 	}
 
+	/**
+	 * Extract annotation value as class list.
+	 */
 	public static List<Class<?>> asClassList(AnnotationNode node, String name)
 			throws Exception {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
 
-		if (entryList == null || entryList.isEmpty()) {
+		if (Util.isListNone(entryList)) {
 			return null;
 		}
 
@@ -103,13 +116,16 @@ public class UtilAsm {
 
 	}
 
+	/**
+	 * Extract annotation value as type safe enum.
+	 */
 	public static <E extends Enum<E>> E asEnum(AnnotationNode node, String name)
 			throws Exception {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
 
-		if (entryList == null || entryList.isEmpty()) {
+		if (Util.isListNone(entryList)) {
 			return null;
 		}
 
@@ -144,12 +160,15 @@ public class UtilAsm {
 
 	}
 
+	/**
+	 * Extract annotation value as a string.
+	 */
 	public static String asString(AnnotationNode node, String name) {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
 
-		if (entryList == null || entryList.isEmpty()) {
+		if (Util.isListNone(entryList)) {
 			return null;
 		}
 
@@ -165,12 +184,15 @@ public class UtilAsm {
 
 	}
 
+	/**
+	 * Extract annotation value as string list.
+	 */
 	public static List<String> asStringList(AnnotationNode node, String name) {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
 
-		if (entryList == null || entryList.isEmpty()) {
+		if (Util.isListNone(entryList)) {
 			return null;
 		}
 
@@ -187,8 +209,15 @@ public class UtilAsm {
 		return null;
 	}
 
-	public static Type bindParameter(MethodNode node) {
-		return parameterArray(node)[0];
+	/**
+	 * Make ASM class node for a JDK class.
+	 */
+	public static ClassNode classNode(Class<?> klaz) throws Exception {
+		final ClassNode node = new ClassNode();
+		final String name = klaz.getName();
+		final ClassReader reader = new ClassReader(name);
+		reader.accept(node, SKIP_MODE);
+		return node;
 	}
 
 	/**
@@ -201,7 +230,7 @@ public class UtilAsm {
 		@SuppressWarnings("unchecked")
 		final List<AnnotationNode> annoList = node.invisibleAnnotations;
 
-		if (annoList == null || annoList.isEmpty()) {
+		if (Util.isListNone(annoList)) {
 			return null;
 		}
 
@@ -216,11 +245,18 @@ public class UtilAsm {
 	}
 
 	/**
-	 * Find component annotation on a class.
+	 * Extract first method parameter type.
+	 */
+	public static Type firstParamType(MethodNode node) {
+		return parameterArray(node)[0];
+	}
+
+	/**
+	 * Check component annotation on a class.
 	 */
 	public static boolean hasComponentAnno(Class<?> klaz) throws Exception {
 
-		final ClassNode node = makeClassNode(klaz);
+		final ClassNode node = classNode(klaz);
 
 		final AnnotationNode anno = componentAnno(node);
 
@@ -228,26 +264,44 @@ public class UtilAsm {
 
 	}
 
+	/**
+	 * Check class if class descriptor is {@link Activate}
+	 */
 	public static boolean isActivateDesc(String desc) {
 		return DESC_ACTIVATE.equals(desc);
 	}
 
+	/**
+	 * Check class if class descriptor is {@link Component}
+	 */
 	public static boolean isComponentDesc(String desc) {
 		return DESC_COMPONENT.equals(desc);
 	}
 
+	/**
+	 * Check class if class descriptor is {@link Deactivate}
+	 */
 	public static boolean isDeactivateDesc(String desc) {
 		return DESC_DEACTIVATE.equals(desc);
 	}
 
+	/**
+	 * Check class if class descriptor is {@link Modified}
+	 */
 	public static boolean isModifiedDesc(String desc) {
 		return DESC_MODIFIED.equals(desc);
 	}
 
+	/**
+	 * Check class if class descriptor is {@link Property}
+	 */
 	public static boolean isPropertyDesc(String desc) {
 		return DESC_PROPERTY.equals(desc);
 	}
 
+	/**
+	 * Check class if class descriptor is {@link Reference}
+	 */
 	public static boolean isReferenceDesc(String desc) {
 		return DESC_REFERENCE.equals(desc);
 	}
@@ -306,14 +360,9 @@ public class UtilAsm {
 		}
 	}
 
-	public static ClassNode makeClassNode(Class<?> klaz) throws Exception {
-		final ClassNode node = new ClassNode();
-		final String name = klaz.getName();
-		final ClassReader reader = new ClassReader(name);
-		reader.accept(node, SKIP_MODE);
-		return node;
-	}
-
+	/**
+	 * Extract method parameters.
+	 */
 	public static Type[] parameterArray(MethodNode node) {
 		return Type.getMethodType(node.desc).getArgumentTypes();
 	}
@@ -328,7 +377,7 @@ public class UtilAsm {
 		@SuppressWarnings("unchecked")
 		final List<AnnotationNode> annoList = node.invisibleAnnotations;
 
-		if (annoList == null || annoList.isEmpty()) {
+		if (Util.isListNone(annoList)) {
 			return null;
 		}
 
@@ -352,7 +401,7 @@ public class UtilAsm {
 		@SuppressWarnings("unchecked")
 		final List<AnnotationNode> annoList = node.invisibleAnnotations;
 
-		if (annoList == null || annoList.isEmpty()) {
+		if (Util.isListNone(annoList)) {
 			return null;
 		}
 

@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
+/**
+ * Xstream enum converter for {@link ReferenceCardinality}.
+ */
 public class ReferenceCardinalityConverter extends AbstractSingleValueConverter {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -23,6 +26,7 @@ public class ReferenceCardinalityConverter extends AbstractSingleValueConverter 
 	public boolean canConvert(final Class klaz) {
 
 		return klaz.equals(ReferenceCardinality.class);
+		
 	}
 
 	@Override

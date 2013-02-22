@@ -20,6 +20,10 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
+/**
+ * Component tag assembled from {@link Component} {@link Actiave}
+ * {@link Deactiave}, etc.
+ */
 @XStreamAlias("component")
 public class ComponentBean implements BeanAcceptor {
 

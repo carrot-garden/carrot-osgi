@@ -13,6 +13,9 @@ import com.carrotgarden.osgi.anno.scr.visit.BeanVisitor;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
+/**
+ * Individual component property "key=value" entry tag.
+ */
 @XStreamAlias("property")
 @XStreamConverter(PropertyBeanConverter.class)
 public class PropertyBean implements BeanAcceptor, Comparable<PropertyBean> {

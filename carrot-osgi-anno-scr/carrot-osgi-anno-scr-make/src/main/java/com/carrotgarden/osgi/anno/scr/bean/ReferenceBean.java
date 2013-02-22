@@ -18,6 +18,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
+/**
+ * Bind external service reference tag. 
+ */
 @XStreamAlias("reference")
 public class ReferenceBean implements BeanAcceptor, Comparable<ReferenceBean> {
 

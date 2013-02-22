@@ -12,6 +12,9 @@ import com.carrotgarden.osgi.anno.scr.visit.BeanVisitor;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+/**
+ * Provided component interfaces tag.
+ */
 @XStreamAlias("provide")
 public class ProvideBean implements BeanAcceptor, Comparable<ProvideBean> {
 

@@ -20,6 +20,11 @@ import com.carrotgarden.osgi.anno.scr.util.UtilAsm;
 import com.carrotgarden.osgi.anno.scr.util.UtilJdk;
 import com.thoughtworks.xstream.XStream;
 
+/**
+ * Entry point into DS component descriptor maker API.
+ * <p>
+ * Uses DS annotations throughout class inheritance.
+ */
 public class Maker {
 
 	@SuppressWarnings("unused")
@@ -29,12 +34,18 @@ public class Maker {
 
 	private final Builder builder;
 
+	/**
+	 * Maker w/o any excluded services.
+	 */
 	public Maker() {
 
 		this(new HashSet<String>());
 
 	}
 
+	/**
+	 * Maker with provided excluded services.
+	 */
 	public Maker(final Set<String> excludedServiceSet) {
 
 		xstream = new XStream();
@@ -45,14 +56,11 @@ public class Maker {
 	}
 
 	/**
+	 * Generate DS XML descriptors. Classes must be already initialized.
 	 * 
-	 * generate SCR xml descriptors; classes must be initialized
-	 * 
-	 * @return valid xml or null
-	 * @throws Exception
-	 * 
+	 * @return valid DS XML or null if there are no components
 	 */
-	public String make(final Class<?>... klazArray) throws Exception {
+	public String make(final Class<?>... klazArray) throws Throwable {
 
 		final List<Class<?>> klazList = new LinkedList<Class<?>>();
 
@@ -60,15 +68,15 @@ public class Maker {
 
 			if (UtilJdk.isAbstract(klaz)) {
 				/**
-				 * abstract classes are processed as part of component
-				 * inheritance
+				 * Abstract classes are processed as part of component
+				 * inheritance.
 				 */
 				continue;
 			}
 
 			if (!UtilAsm.hasComponentAnno(klaz)) {
 				/**
-				 * interested in @Component annotated only
+				 * Interested in @Component annotated only.
 				 */
 				continue;
 			}
@@ -91,12 +99,10 @@ public class Maker {
 	static final boolean INIT_YES = true;
 
 	/**
+	 * Generate DS XML descriptors. Classes will be loaded and initialized as
+	 * needed.
 	 * 
-	 * generate SCR xml descriptors; classes will be loaded and initialized as
-	 * needed
-	 * 
-	 * @return valid xml or null
-	 * 
+	 * @return valid DS XML or null if there are no components.
 	 */
 	public String make(final ClassLoader loader, final String... nameArray)
 			throws Throwable {
@@ -109,20 +115,20 @@ public class Maker {
 
 			if (UtilJdk.isAbstract(klaz)) {
 				/**
-				 * abstract classes are processed as part of component
-				 * inheritance
+				 * Abstract classes are processed as part of component
+				 * inheritance.
 				 */
 				continue;
 			}
 
 			if (!UtilAsm.hasComponentAnno(klaz)) {
 				/**
-				 * interested in @Component annotated only
+				 * Interested in @Component annotated only.
 				 */
 				continue;
 			}
 
-			/** force class hierarchy initialization */
+			/** Force class hierarchy initialization. */
 			Class.forName(name, INIT_YES, loader);
 
 			klazList.add(klaz);

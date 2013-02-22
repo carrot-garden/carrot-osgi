@@ -12,6 +12,9 @@ import com.carrotgarden.osgi.anno.scr.visit.BeanVisitor;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+/**
+ * Individual component property file entry tag.
+ */
 @XStreamAlias("properties")
 public class PropertyFileBean implements BeanAcceptor,
 		Comparable<PropertyFileBean> {

@@ -7,6 +7,9 @@
  */
 package com.carrotgarden.osgi.anno.scr.bean;
 
+/**
+ * Component implementation class tag.
+ */
 import com.carrotgarden.osgi.anno.scr.visit.BeanAcceptor;
 import com.carrotgarden.osgi.anno.scr.visit.BeanVisitor;
 import com.thoughtworks.xstream.annotations.XStreamAlias;

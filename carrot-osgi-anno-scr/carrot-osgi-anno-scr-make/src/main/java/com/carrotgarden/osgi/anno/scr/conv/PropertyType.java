@@ -7,7 +7,9 @@
  */
 package com.carrotgarden.osgi.anno.scr.conv;
 
-
+/**
+ * Supported property types in {@link Component#property(}.
+ */
 public enum PropertyType {
 
 	STRING(String.class), // default

@@ -16,12 +16,17 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
+/**
+ * Top level container tag for multiple components.
+ */
 @XStreamAlias("container")
 public class AggregatorBean implements BeanAcceptor {
 
+	public static final String DEFAULT_XMLNS = "http://www.osgi.org/xmlns/scr/v1.1.0";
+
 	@XStreamAsAttribute
 	@XStreamAlias("xmlns")
-	public String xmlns = "http://www.osgi.org/xmlns/scr/v1.1.0";
+	public String xmlns = DEFAULT_XMLNS;
 
 	@XStreamImplicit(itemFieldName = "component")
 	public List<ComponentBean> componentList = new LinkedList<ComponentBean>();

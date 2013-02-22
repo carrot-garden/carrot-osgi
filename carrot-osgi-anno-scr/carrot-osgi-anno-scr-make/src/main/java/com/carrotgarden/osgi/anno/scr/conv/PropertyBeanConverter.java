@@ -7,6 +7,7 @@
  */
 package com.carrotgarden.osgi.anno.scr.conv;
 
+import org.osgi.service.component.annotations.*;
 import com.carrotgarden.osgi.anno.scr.bean.PropertyBean;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -14,6 +15,9 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
+/**
+ * Xstream converter for {@link PropertyBean}
+ */
 public class PropertyBeanConverter implements Converter {
 
 	@Override

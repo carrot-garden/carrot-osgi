@@ -7,13 +7,16 @@
  */
 package com.carrotgarden.osgi.anno.scr.conv;
 
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
+/**
+ * Xstream enum converter for {@link ReferencePolicy}.
+ */
 public class ReferencePolicyConverter extends AbstractSingleValueConverter {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -23,6 +26,7 @@ public class ReferencePolicyConverter extends AbstractSingleValueConverter {
 	public boolean canConvert(final Class klaz) {
 
 		return klaz.equals(ReferencePolicy.class);
+		
 	}
 
 	@Override

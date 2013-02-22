@@ -7,13 +7,16 @@
  */
 package com.carrotgarden.osgi.anno.scr.conv;
 
-import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
+/**
+ * Xstream enum converter for {@link ConfigurationPolicy}.
+ */
 public class ConfigurationPolicyConverter extends AbstractSingleValueConverter {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -22,9 +25,8 @@ public class ConfigurationPolicyConverter extends AbstractSingleValueConverter {
 	@Override
 	public boolean canConvert(final Class klaz) {
 
-		// log.debug("klaz : {}", klaz);
-
 		return klaz.equals(ConfigurationPolicy.class);
+
 	}
 
 	@Override
@@ -39,7 +41,8 @@ public class ConfigurationPolicyConverter extends AbstractSingleValueConverter {
 	@Override
 	public Object fromString(final String value) {
 
-		final ConfigurationPolicy policy = UtilEnum.fromConfigurationPolicy(value);
+		final ConfigurationPolicy policy = UtilEnum
+				.fromConfigurationPolicy(value);
 
 		return policy;
 

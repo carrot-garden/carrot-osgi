@@ -19,18 +19,18 @@ import org.osgi.service.component.annotations.Property;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * Utilities which rely on JDK reflection.
+ * DS utilities which rely on JDK reflection.
  */
 public class UtilJdk {
 
 	/**
-	 * Ensure :
+	 * Verify {@link Reference} methods contract. Ensure :
 	 * <p>
 	 * 1) bind/unbind names follow osgi spec;
 	 * <p>
-	 * 2) have first argument of the same type;
+	 * 2) both have first argument of the same type;
 	 * <p>
-	 * 3) optional second argument is java.util.Map
+	 * 3) both might have optional second argument is java.util.Map
 	 */
 	public static void assertBindUnbindMatch(final Class<?> klaz,
 			final String typeName, final String nameBind,
@@ -103,7 +103,9 @@ public class UtilJdk {
 	}
 
 	/**
-	 * ordered from most deep super class upwards
+	 * Collect class inheritance hierarchy.
+	 * <p>
+	 * Ordered from most deep super class upwards.
 	 */
 	public static List<Class<?>> inheritanceList(final Class<?> klaz) {
 
@@ -177,6 +179,9 @@ public class UtilJdk {
 		return false;
 	}
 
+	/**
+	 * Check for abstract class modifier.
+	 */
 	public static boolean isAbstract(final Class<?> klaz) {
 		return Modifier.isAbstract(klaz.getModifiers());
 	}

@@ -16,6 +16,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
+/**
+ * Collection of provided interfaces tag.
+ */
 @XStreamAlias("service")
 public class ServiceBean implements BeanAcceptor {
 
