@@ -7,6 +7,7 @@
  */
 package com.carrotgarden.osgi.anno.scr.util;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -211,12 +212,27 @@ public class UtilAsm {
 
 	/**
 	 * Make ASM class node for a JDK class.
+	 * <p>
+	 * Use class's own class loader to locate byte codes.
 	 */
-	public static ClassNode classNode(Class<?> klaz) throws Exception {
-		final ClassNode node = new ClassNode();
+	public static ClassNode classNode(final Class<?> klaz) throws Exception {
+
 		final String name = klaz.getName();
-		final ClassReader reader = new ClassReader(name);
+		final String path = name.replace('.', '/') + ".class";
+
+		ClassLoader loader = klaz.getClassLoader();
+		if (loader == null) {
+			loader = ClassLoader.getSystemClassLoader();
+		}
+
+		final InputStream stream = loader.getResourceAsStream(path);
+
+		final ClassReader reader = new ClassReader(stream);
+
+		final ClassNode node = new ClassNode();
+
 		reader.accept(node, SKIP_MODE);
+
 		return node;
 	}
 
