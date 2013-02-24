@@ -69,5 +69,10 @@ public enum ReferenceCardinality {
 		return MANDATORY;
 
 	}
+	
+	public String toString(){
+		return value;
+	}
+
 
 }

@@ -66,5 +66,9 @@ public enum ConfigurationPolicy {
 		return OPTIONAL;
 
 	}
+	
+	public String toString(){
+		return value;
+	}
 
 }

@@ -64,4 +64,8 @@ public enum ReferencePolicy {
 
 	}
 
+	public String toString(){
+		return value;
+	}
+
 }
