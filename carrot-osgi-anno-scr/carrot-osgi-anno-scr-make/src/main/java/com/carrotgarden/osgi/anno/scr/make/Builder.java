@@ -156,8 +156,7 @@ public class Builder {
 
 			final String methodName = methodNode.name;
 
-			@SuppressWarnings("unchecked")
-			final List<AnnotationNode> annoList = methodNode.invisibleAnnotations;
+			final List<AnnotationNode> annoList = UtilAsm.combine(methodNode);
 
 			if (Util.isListNone(annoList)) {
 				continue;

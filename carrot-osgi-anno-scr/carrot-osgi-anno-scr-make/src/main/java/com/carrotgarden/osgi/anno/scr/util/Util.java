@@ -7,6 +7,7 @@
  */
 package com.carrotgarden.osgi.anno.scr.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +23,33 @@ public class Util {
 			return;
 		}
 		throw new IllegalStateException(message);
+	}
+
+	/**
+	 * Concatenate lists that permit null.
+	 */
+	public static <T> List<T> concatenate(List<T> one, List<T> two) {
+		if (one == null && two == null) {
+			return null;
+		}
+		if (one != null && two == null) {
+			return one;
+		}
+		if (one == null && two != null) {
+			return two;
+		}
+		final int size = one.size() + two.size();
+		final List<T> list = new ArrayList<T>(size);
+		list.addAll(one);
+		list.addAll(two);
+		return list;
+	}
+
+	/**
+	 * Check for null or empty list.
+	 */
+	public static boolean isListNone(List<?> list) {
+		return list == null || list.isEmpty();
 	}
 
 	/**
@@ -42,13 +70,6 @@ public class Util {
 
 		return "un" + bindName;
 
-	}
-
-	/**
-	 * Check for null or empty list.
-	 */
-	public static boolean isListNone(List<?> list) {
-		return list == null || list.isEmpty();
 	}
 
 	private Util() {

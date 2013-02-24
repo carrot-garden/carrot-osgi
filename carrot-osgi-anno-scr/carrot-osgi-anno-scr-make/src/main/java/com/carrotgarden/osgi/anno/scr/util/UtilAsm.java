@@ -51,9 +51,6 @@ public class UtilAsm {
 	public static final String DESC_REFERENCE_POLICY = Type
 			.getDescriptor(ReferencePolicy.class);
 
-	public static final String DESC_REFERENCE_POLICY_OPTION = Type
-			.getDescriptor(ReferencePolicyOption.class);
-
 	public static final int SKIP_MODE = ClassReader.SKIP_CODE
 			| ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES;
 
@@ -237,14 +234,40 @@ public class UtilAsm {
 	}
 
 	/**
+	 * Combine class annotations.
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<AnnotationNode> combine(ClassNode node) {
+		return Util.concatenate(node.invisibleAnnotations,
+				node.visibleAnnotations);
+	}
+
+	/**
+	 * Combine field annotations.
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<AnnotationNode> combine(FieldNode node) {
+		return Util.concatenate(node.invisibleAnnotations,
+				node.visibleAnnotations);
+	}
+
+	/**
+	 * Combine method annotations.
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<AnnotationNode> combine(MethodNode node) {
+		return Util.concatenate(node.invisibleAnnotations,
+				node.visibleAnnotations);
+	}
+
+	/**
 	 * Find component annotation on a class.
 	 * 
 	 * @return {@link Component} {@link AnnotationNode} or null if missing.
 	 */
 	public static AnnotationNode componentAnno(ClassNode node) {
 
-		@SuppressWarnings("unchecked")
-		final List<AnnotationNode> annoList = node.invisibleAnnotations;
+		final List<AnnotationNode> annoList = combine(node);
 
 		if (Util.isListNone(annoList)) {
 			return null;
@@ -390,8 +413,7 @@ public class UtilAsm {
 	 */
 	public static AnnotationNode propertyAnno(FieldNode node) {
 
-		@SuppressWarnings("unchecked")
-		final List<AnnotationNode> annoList = node.invisibleAnnotations;
+		final List<AnnotationNode> annoList = combine(node);
 
 		if (Util.isListNone(annoList)) {
 			return null;
@@ -414,8 +436,7 @@ public class UtilAsm {
 	 */
 	public static AnnotationNode referenceAnno(MethodNode node) {
 
-		@SuppressWarnings("unchecked")
-		final List<AnnotationNode> annoList = node.invisibleAnnotations;
+		final List<AnnotationNode> annoList = combine(node);
 
 		if (Util.isListNone(annoList)) {
 			return null;

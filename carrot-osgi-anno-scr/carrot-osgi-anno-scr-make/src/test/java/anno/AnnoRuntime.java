@@ -28,9 +28,9 @@ import java.lang.annotation.Target;
  * 6. 1-dimensional arrays
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
 public @interface AnnoRuntime {
 
-	String[] value();
+	String[] value() default {};
 
 }

@@ -28,11 +28,11 @@ import java.lang.annotation.Target;
  * 6. 1-dimensional arrays
  */
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 public @interface AnnoClass {
 
 	String nameEntry() default "admin";
 
-	String creationDate();
+	String creationDate() default "2012-01-02";
 
 }
