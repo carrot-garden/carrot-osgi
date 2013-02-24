@@ -13,8 +13,13 @@
 
 	<target name="maven">
 		<exec executable="mvn">
+
 			<arg value="clean" />
 			<arg value="install" />
+
+			<arg value="--activate-profiles" />
+			<arg value="testing-modules" />
+
 		</exec>
 	</target>
 

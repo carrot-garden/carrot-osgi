@@ -49,8 +49,6 @@
 	<modules>
 		<module>carrot-osgi-anno-scr-core</module>
 		<module>carrot-osgi-anno-scr-make</module>
-		<module>carrot-osgi-anno-scr-test-1</module>
-		<module>carrot-osgi-anno-scr-test-2</module>
 	</modules>
 
 	<build>
@@ -142,13 +140,21 @@
 	</build>
 
 	<profiles>
+	
+		<!-- Activate testing modules. -->
+		<profile>
+			<id>testing-modules</id>
+			<modules>
+				<module>carrot-osgi-anno-scr-test-1</module>
+				<module>carrot-osgi-anno-scr-test-2</module>
+			</modules>
+		</profile>
 
+		<!-- Do not apply license to DS component descriptors. -->
 		<profile>
 			<id>license</id>
 			<build>
 				<plugins>
-				
-					<!-- Do not apply license to DS component descriptors. -->
 					<plugin>
 						<groupId>com.mycila.maven-license-plugin</groupId>
 						<artifactId>maven-license-plugin</artifactId>
