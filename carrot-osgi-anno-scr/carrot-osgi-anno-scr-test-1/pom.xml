@@ -14,8 +14,13 @@
 	<artifactId>carrot-osgi-anno-scr-test-1</artifactId>
 	<packaging>jar</packaging>
 
+	<description>
+		Verify obsolete/custom annotations.
+	</description>
+
 	<properties>
 
+		<!-- OSGI specification w/o DS annotations. -->
 		<projectOsgiVersion>4.2.0</projectOsgiVersion>
 
 		<!-- Obsolete: @Retention(RetentionPolicy.RUNTIME) -->

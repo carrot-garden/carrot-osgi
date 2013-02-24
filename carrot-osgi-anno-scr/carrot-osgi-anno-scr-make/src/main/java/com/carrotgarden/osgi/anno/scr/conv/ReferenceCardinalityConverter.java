@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
+import com.carrotgarden.osgi.anno.scr.util.UtilJdk;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 /**
@@ -32,9 +33,12 @@ public class ReferenceCardinalityConverter extends AbstractSingleValueConverter 
 	@Override
 	public String toString(final Object instance) {
 
-		final ReferenceCardinality cardinality = (ReferenceCardinality) instance;
+		final ReferenceCardinality entry = (ReferenceCardinality) instance;
 
-		return cardinality.toString();
+		/** Workaround for OSGI final specification change. */
+		final String value = UtilJdk.readField(entry, "value");
+
+		return value;
 
 	}
 

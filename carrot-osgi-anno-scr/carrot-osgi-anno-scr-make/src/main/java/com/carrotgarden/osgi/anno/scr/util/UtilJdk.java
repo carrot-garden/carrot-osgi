@@ -102,6 +102,38 @@ public class UtilJdk {
 
 	}
 
+	@SuppressWarnings("unused")
+	private static boolean hasClassComponentAnno(final Class<?> klaz) {
+		return klaz.isAnnotationPresent(Component.class);
+	}
+
+	@SuppressWarnings("unused")
+	private static boolean hasFieldPropertyAnno(final Class<?> klaz) {
+		final Field[] fieldArray = klaz.getDeclaredFields();
+		for (final Field field : fieldArray) {
+			if (field.isAnnotationPresent(Property.class)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@SuppressWarnings("unused")
+	private static boolean hasInterfaces(final Class<?> klaz) {
+		return klaz.getInterfaces().length > 0;
+	}
+
+	@SuppressWarnings("unused")
+	private static boolean hasMethodReferenceAnno(final Class<?> klaz) {
+		final Method[] methodArray = klaz.getDeclaredMethods();
+		for (final Method method : methodArray) {
+			if (method.isAnnotationPresent(Reference.class)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Collect class inheritance hierarchy.
 	 * <p>
@@ -125,58 +157,6 @@ public class UtilJdk {
 
 		}
 
-	}
-
-	@SuppressWarnings("unused")
-	private static String methodName(
-			final Class<? extends Annotation> annoType, final Class<?> klazType) {
-
-		final Method[] methodArray = klazType.getDeclaredMethods();
-
-		for (final Method method : methodArray) {
-
-			final Annotation anno = method.getAnnotation(annoType);
-
-			if (anno != null) {
-				return method.getName();
-			}
-
-		}
-
-		return null;
-
-	}
-
-	@SuppressWarnings("unused")
-	private static boolean hasClassComponentAnno(final Class<?> klaz) {
-		return klaz.isAnnotationPresent(Component.class);
-	}
-
-	@SuppressWarnings("unused")
-	private static boolean hasInterfaces(final Class<?> klaz) {
-		return klaz.getInterfaces().length > 0;
-	}
-
-	@SuppressWarnings("unused")
-	private static boolean hasFieldPropertyAnno(final Class<?> klaz) {
-		final Field[] fieldArray = klaz.getDeclaredFields();
-		for (final Field field : fieldArray) {
-			if (field.isAnnotationPresent(Property.class)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@SuppressWarnings("unused")
-	private static boolean hasMethodReferenceAnno(final Class<?> klaz) {
-		final Method[] methodArray = klaz.getDeclaredMethods();
-		for (final Method method : methodArray) {
-			if (method.isAnnotationPresent(Reference.class)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -272,6 +252,40 @@ public class UtilJdk {
 			return false;
 		}
 
+	}
+
+	@SuppressWarnings("unused")
+	private static String methodName(
+			final Class<? extends Annotation> annoType, final Class<?> klazType) {
+
+		final Method[] methodArray = klazType.getDeclaredMethods();
+
+		for (final Method method : methodArray) {
+
+			final Annotation anno = method.getAnnotation(annoType);
+
+			if (anno != null) {
+				return method.getName();
+			}
+
+		}
+
+		return null;
+
+	}
+
+	/**
+	 * Read value of a known private field.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T readField(Object instance, String fieldName) {
+		try {
+			final Field field = instance.getClass().getDeclaredField(fieldName);
+			field.setAccessible(true);
+			return (T) field.get(instance);
+		} catch (Throwable e) {
+			throw new IllegalStateException("Can not read field.", e);
+		}
 	}
 
 	private UtilJdk() {

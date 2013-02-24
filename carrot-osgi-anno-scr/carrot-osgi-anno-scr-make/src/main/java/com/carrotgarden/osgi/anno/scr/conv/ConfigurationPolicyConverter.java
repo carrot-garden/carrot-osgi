@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
+import com.carrotgarden.osgi.anno.scr.util.UtilJdk;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 /**
@@ -32,9 +33,12 @@ public class ConfigurationPolicyConverter extends AbstractSingleValueConverter {
 	@Override
 	public String toString(final Object instance) {
 
-		final ConfigurationPolicy policy = (ConfigurationPolicy) instance;
+		final ConfigurationPolicy entry = (ConfigurationPolicy) instance;
 
-		return policy.toString();
+		/** Workaround for OSGI final specification change. */
+		final String value = UtilJdk.readField(entry, "value");
+
+		return value;
 
 	}
 

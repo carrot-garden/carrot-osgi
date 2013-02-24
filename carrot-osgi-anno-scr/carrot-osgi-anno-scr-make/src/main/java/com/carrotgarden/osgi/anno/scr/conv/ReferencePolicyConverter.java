@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.carrotgarden.osgi.anno.scr.util.UtilEnum;
+import com.carrotgarden.osgi.anno.scr.util.UtilJdk;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 /**
@@ -26,15 +27,18 @@ public class ReferencePolicyConverter extends AbstractSingleValueConverter {
 	public boolean canConvert(final Class klaz) {
 
 		return klaz.equals(ReferencePolicy.class);
-		
+
 	}
 
 	@Override
 	public String toString(final Object instance) {
 
-		final ReferencePolicy policy = (ReferencePolicy) instance;
+		final ReferencePolicy entry = (ReferencePolicy) instance;
 
-		return policy.toString();
+		/** Workaround for OSGI final specification change. */
+		final String value = UtilJdk.readField(entry, "value");
+
+		return value;
 
 	}
 
