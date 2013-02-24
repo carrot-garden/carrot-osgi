@@ -13,16 +13,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
- * not in osgi spec yet;
- * 
- * must be used on static final fields;
- * 
- * type must be one of osgi type:
- * 
+ * Custom DS annotation. Provides "key=value" component property. Must be used
+ * on static final fields. Type must be one of OSGI types:
+ * <p>
  * String Long Double Float Integer Byte Character Short
- * 
- * String property can be multi-value; in this case use "\n" to separate values
+ * <p>
+ * String property can be multi-value; in this case use "\n" to separate values.
  * 
  * @see Component
  * 
@@ -32,9 +28,9 @@ import java.lang.annotation.Target;
 public @interface Property {
 
 	/**
-	 * use name() if provided;
-	 * 
-	 * use annotation target final static field name otherwise
+	 * Use name() if provided;
+	 * <p>
+	 * Otherwise, use annotation target final static field name.
 	 */
 	String name() default "";
 

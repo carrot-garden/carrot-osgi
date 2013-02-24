@@ -7,8 +7,6 @@
     http://www.opensource.org/licenses/bsd-license.php
 
 -->
-<!-- Copyright (C) 2010-2013 Andrei Pozolotin <Andrei.Pozolotin@gmail.com> 
-	All rights reserved. Licensed under the OSI BSD License. http://www.opensource.org/licenses/bsd-license.php -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -22,10 +20,14 @@
 
 	<artifactId>carrot-osgi-anno-scr-make</artifactId>
 	<packaging>bundle</packaging>
+	
+	<description>
+		OSGI DS/SCR component descriptor generator.
+	</description>
 
 	<dependencies>
 
-		<!-- OSGI Specification. Use standard first, override with custom. -->
+		<!-- OSGI annotations. Use standard first, override with custom. -->
 		<dependency>
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
