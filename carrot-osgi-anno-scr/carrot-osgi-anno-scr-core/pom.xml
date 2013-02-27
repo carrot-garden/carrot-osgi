@@ -15,7 +15,7 @@
 		<groupId>com.carrotgarden.osgi</groupId>
 		<artifactId>carrot-osgi-anno-scr</artifactId>
 		<version>2.0.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>carrot-osgi-anno-scr-core</artifactId>

@@ -7,30 +7,19 @@
  */
 package com.carrotgarden.osgi.anno.scr.make;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Property;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
@@ -47,8 +36,8 @@ import com.carrotgarden.osgi.anno.scr.bean.ReferenceBean;
 import com.carrotgarden.osgi.anno.scr.bean.ServiceBean;
 import com.carrotgarden.osgi.anno.scr.conv.PropertyType;
 import com.carrotgarden.osgi.anno.scr.util.Util;
-import com.carrotgarden.osgi.anno.scr.util.UtilJdk;
 import com.carrotgarden.osgi.anno.scr.util.UtilAsm;
+import com.carrotgarden.osgi.anno.scr.util.UtilJdk;
 
 /**
  * Xstream bean builder.
@@ -162,7 +151,7 @@ public class Builder {
 				continue;
 			}
 
-			for (AnnotationNode annoNode : annoList) {
+			for (final AnnotationNode annoNode : annoList) {
 
 				final String annoDesc = annoNode.desc;
 
@@ -206,7 +195,7 @@ public class Builder {
 	 * Collect static final {@link Property} fields.
 	 */
 	private void applyPropertyEmbedded(final ComponentBean component,
-			final Class<?> type, ClassNode node) throws Exception {
+			final Class<?> type, final ClassNode node) throws Exception {
 
 		@SuppressWarnings("unchecked")
 		final List<FieldNode> fieldList = node.fields;
@@ -330,7 +319,7 @@ public class Builder {
 
 		final String annoDesc = annoNode.desc;
 
-		for (String entry : entryList) {
+		for (final String entry : entryList) {
 
 			if (!Util.isValidText(entry)) {
 				throw new IllegalStateException("property must not be empty : "
@@ -393,7 +382,7 @@ public class Builder {
 	 * Collect bind methods from {@link Reference} annotations.
 	 */
 	private void applyReference(final ComponentBean component,
-			final Class<?> type, ClassNode classNode) throws Exception {
+			final Class<?> type, final ClassNode classNode) throws Exception {
 
 		@SuppressWarnings("unchecked")
 		final List<MethodNode> methodList = classNode.methods;
@@ -402,7 +391,7 @@ public class Builder {
 			return;
 		}
 
-		for (MethodNode methodNode : methodList) {
+		for (final MethodNode methodNode : methodList) {
 
 			final AnnotationNode annoNode = UtilAsm.referenceAnno(methodNode);
 
@@ -410,7 +399,9 @@ public class Builder {
 				continue;
 			}
 
-			if (!UtilAsm.isValidBindParam(methodNode)) {
+			final ClassLoader loader = type.getClassLoader();
+
+			if (!UtilAsm.isValidBindParam(loader, methodNode)) {
 				throw new IllegalStateException(
 						"invalid parameters for reference : " + methodNode.desc);
 			}

@@ -17,7 +17,15 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.osgi.service.component.annotations.*;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Property;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * DS utilities which rely on ASM reflection.
@@ -57,7 +65,7 @@ public class UtilAsm {
 	/**
 	 * Extract annotation value as {@link Boolean}.
 	 */
-	public static Boolean asBoolean(AnnotationNode node, String name) {
+	public static Boolean asBoolean(final AnnotationNode node, final String name) {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
@@ -81,8 +89,8 @@ public class UtilAsm {
 	/**
 	 * Extract annotation value as class list.
 	 */
-	public static List<Class<?>> asClassList(AnnotationNode node, String name)
-			throws Exception {
+	public static List<Class<?>> asClassList(final AnnotationNode node,
+			final String name) throws Exception {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
@@ -101,7 +109,7 @@ public class UtilAsm {
 				@SuppressWarnings("unchecked")
 				final List<Type> entryValue = (List<Type>) entryList.get(k + 1);
 
-				for (Type type : entryValue) {
+				for (final Type type : entryValue) {
 					final Class<?> klaz = loader.loadClass(type.getClassName());
 					klazList.add(klaz);
 				}
@@ -117,8 +125,8 @@ public class UtilAsm {
 	/**
 	 * Extract annotation value as type safe enum.
 	 */
-	public static <E extends Enum<E>> E asEnum(AnnotationNode node, String name)
-			throws Exception {
+	public static <E extends Enum<E>> E asEnum(final AnnotationNode node,
+			final String name) throws Exception {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
@@ -143,7 +151,7 @@ public class UtilAsm {
 				final Class<E> klaz = (Class<E>) UtilAsm.class.getClassLoader()
 						.loadClass(klazName);
 
-				for (E entry : klaz.getEnumConstants()) {
+				for (final E entry : klaz.getEnumConstants()) {
 					if (entry.name().equals(value)) {
 						return entry;
 					}
@@ -161,7 +169,7 @@ public class UtilAsm {
 	/**
 	 * Extract annotation value as a string.
 	 */
-	public static String asString(AnnotationNode node, String name) {
+	public static String asString(final AnnotationNode node, final String name) {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
@@ -185,7 +193,8 @@ public class UtilAsm {
 	/**
 	 * Extract annotation value as string list.
 	 */
-	public static List<String> asStringList(AnnotationNode node, String name) {
+	public static List<String> asStringList(final AnnotationNode node,
+			final String name) {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
@@ -237,7 +246,7 @@ public class UtilAsm {
 	 * Combine class annotations.
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<AnnotationNode> combine(ClassNode node) {
+	public static List<AnnotationNode> combine(final ClassNode node) {
 		return Util.concatenate(node.invisibleAnnotations,
 				node.visibleAnnotations);
 	}
@@ -246,7 +255,7 @@ public class UtilAsm {
 	 * Combine field annotations.
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<AnnotationNode> combine(FieldNode node) {
+	public static List<AnnotationNode> combine(final FieldNode node) {
 		return Util.concatenate(node.invisibleAnnotations,
 				node.visibleAnnotations);
 	}
@@ -255,7 +264,7 @@ public class UtilAsm {
 	 * Combine method annotations.
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<AnnotationNode> combine(MethodNode node) {
+	public static List<AnnotationNode> combine(final MethodNode node) {
 		return Util.concatenate(node.invisibleAnnotations,
 				node.visibleAnnotations);
 	}
@@ -265,7 +274,7 @@ public class UtilAsm {
 	 * 
 	 * @return {@link Component} {@link AnnotationNode} or null if missing.
 	 */
-	public static AnnotationNode componentAnno(ClassNode node) {
+	public static AnnotationNode componentAnno(final ClassNode node) {
 
 		final List<AnnotationNode> annoList = combine(node);
 
@@ -286,14 +295,15 @@ public class UtilAsm {
 	/**
 	 * Extract first method parameter type.
 	 */
-	public static Type firstParamType(MethodNode node) {
+	public static Type firstParamType(final MethodNode node) {
 		return parameterArray(node)[0];
 	}
 
 	/**
 	 * Check component annotation on a class.
 	 */
-	public static boolean hasComponentAnno(Class<?> klaz) throws Exception {
+	public static boolean hasComponentAnno(final Class<?> klaz)
+			throws Exception {
 
 		final ClassNode node = classNode(klaz);
 
@@ -306,42 +316,42 @@ public class UtilAsm {
 	/**
 	 * Check class if class descriptor is {@link Activate}
 	 */
-	public static boolean isActivateDesc(String desc) {
+	public static boolean isActivateDesc(final String desc) {
 		return DESC_ACTIVATE.equals(desc);
 	}
 
 	/**
 	 * Check class if class descriptor is {@link Component}
 	 */
-	public static boolean isComponentDesc(String desc) {
+	public static boolean isComponentDesc(final String desc) {
 		return DESC_COMPONENT.equals(desc);
 	}
 
 	/**
 	 * Check class if class descriptor is {@link Deactivate}
 	 */
-	public static boolean isDeactivateDesc(String desc) {
+	public static boolean isDeactivateDesc(final String desc) {
 		return DESC_DEACTIVATE.equals(desc);
 	}
 
 	/**
 	 * Check class if class descriptor is {@link Modified}
 	 */
-	public static boolean isModifiedDesc(String desc) {
+	public static boolean isModifiedDesc(final String desc) {
 		return DESC_MODIFIED.equals(desc);
 	}
 
 	/**
 	 * Check class if class descriptor is {@link Property}
 	 */
-	public static boolean isPropertyDesc(String desc) {
+	public static boolean isPropertyDesc(final String desc) {
 		return DESC_PROPERTY.equals(desc);
 	}
 
 	/**
 	 * Check class if class descriptor is {@link Reference}
 	 */
-	public static boolean isReferenceDesc(String desc) {
+	public static boolean isReferenceDesc(final String desc) {
 		return DESC_REFERENCE.equals(desc);
 	}
 
@@ -380,8 +390,8 @@ public class UtilAsm {
 	 * match this rule, this implies the method name is overloaded and SCR may
 	 * choose any of the methods to call.
 	 */
-	public static boolean isValidBindParam(MethodNode node) throws Exception {
-		final ClassLoader loader = UtilAsm.class.getClassLoader();
+	public static boolean isValidBindParam(final ClassLoader loader,
+			final MethodNode node) throws Exception {
 		final Type[] array = parameterArray(node);
 		switch (array.length) {
 		case 1: {
@@ -402,7 +412,7 @@ public class UtilAsm {
 	/**
 	 * Extract method parameters.
 	 */
-	public static Type[] parameterArray(MethodNode node) {
+	public static Type[] parameterArray(final MethodNode node) {
 		return Type.getMethodType(node.desc).getArgumentTypes();
 	}
 
@@ -411,7 +421,7 @@ public class UtilAsm {
 	 * 
 	 * @return {@link Property} {@link AnnotationNode} or null if missing.
 	 */
-	public static AnnotationNode propertyAnno(FieldNode node) {
+	public static AnnotationNode propertyAnno(final FieldNode node) {
 
 		final List<AnnotationNode> annoList = combine(node);
 
@@ -434,7 +444,7 @@ public class UtilAsm {
 	 * 
 	 * @return {@link Reference} {@link AnnotationNode} or null if missing.
 	 */
-	public static AnnotationNode referenceAnno(MethodNode node) {
+	public static AnnotationNode referenceAnno(final MethodNode node) {
 
 		final List<AnnotationNode> annoList = combine(node);
 
