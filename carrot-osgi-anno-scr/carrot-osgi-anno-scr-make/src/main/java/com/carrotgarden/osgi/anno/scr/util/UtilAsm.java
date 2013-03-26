@@ -89,8 +89,8 @@ public class UtilAsm {
 	/**
 	 * Extract annotation value as class list.
 	 */
-	public static List<Class<?>> asClassList(final AnnotationNode node,
-			final String name) throws Exception {
+	public static List<Class<?>> asClassList(final ClassLoader loader,
+			final AnnotationNode node, final String name) throws Exception {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
@@ -103,7 +103,6 @@ public class UtilAsm {
 			final String entryName = (String) entryList.get(k);
 			if (entryName.equals(name)) {
 
-				final ClassLoader loader = UtilAsm.class.getClassLoader();
 				final List<Class<?>> klazList = new ArrayList<Class<?>>();
 
 				@SuppressWarnings("unchecked")
@@ -125,8 +124,8 @@ public class UtilAsm {
 	/**
 	 * Extract annotation value as type safe enum.
 	 */
-	public static <E extends Enum<E>> E asEnum(final AnnotationNode node,
-			final String name) throws Exception {
+	public static <E extends Enum<E>> E asEnum(final ClassLoader loader,
+			final AnnotationNode node, final String name) throws Exception {
 
 		@SuppressWarnings("unchecked")
 		final List<Object> entryList = node.values;
@@ -148,8 +147,7 @@ public class UtilAsm {
 				final String klazName = Type.getType(desc).getClassName();
 
 				@SuppressWarnings("unchecked")
-				final Class<E> klaz = (Class<E>) UtilAsm.class.getClassLoader()
-						.loadClass(klazName);
+				final Class<E> klaz = (Class<E>) loader.loadClass(klazName);
 
 				for (final E entry : klaz.getEnumConstants()) {
 					if (entry.name().equals(value)) {
@@ -228,6 +226,7 @@ public class UtilAsm {
 
 		ClassLoader loader = klaz.getClassLoader();
 		if (loader == null) {
+			/** Loader is null for system classes. */
 			loader = ClassLoader.getSystemClassLoader();
 		}
 

@@ -100,7 +100,9 @@ public class Builder {
 			component.immediate = immediate;
 		}
 
-		final ConfigurationPolicy policy = UtilAsm.asEnum(annoNode,
+		final ClassLoader loader = type.getClassLoader();
+
+		final ConfigurationPolicy policy = UtilAsm.asEnum(loader, annoNode,
 				"configurationPolicy");
 		if (policy != null) {
 			component.configPolicy = policy;
@@ -431,8 +433,10 @@ public class Builder {
 			final AnnotationNode annoNode, final Class<?> type)
 			throws Exception {
 
-		final List<Class<?>> serviceList = UtilAsm.asClassList(annoNode,
-				"service");
+		final ClassLoader loader = type.getClassLoader();
+
+		final List<Class<?>> serviceList = UtilAsm.asClassList(loader,
+				annoNode, "service");
 
 		if (Util.isListNone(serviceList)) {
 			return;
@@ -608,13 +612,16 @@ public class Builder {
 			reference.name = nameDefault;
 		}
 
-		final ReferenceCardinality cardinality = UtilAsm.asEnum(annoNode,
-				"cardinality");
+		final ClassLoader loader = type.getClassLoader();
+
+		final ReferenceCardinality cardinality = UtilAsm.asEnum(loader,
+				annoNode, "cardinality");
 		if (cardinality != null) {
 			reference.cardinality = cardinality;
 		}
 
-		final ReferencePolicy policy = UtilAsm.asEnum(annoNode, "policy");
+		final ReferencePolicy policy = UtilAsm.asEnum(loader, annoNode,
+				"policy");
 		if (policy != null) {
 			reference.policy = policy;
 		}
