@@ -5,15 +5,15 @@
       <provide interface="java.lang.Comparable"/>
       <provide interface="java.util.concurrent.Callable"/>
     </service>
-    <property name="OVER" type="String">level 2</property>
-    <property name="be" type="String">happy at comp 1</property>
-    <property name="good-bye" type="String">hello property</property>
-    <property name="hello" type="String">hello property</property>
-    <property name="hello-2" type="Float">2.5</property>
-    <property name="hello-string" type="String">world</property>
-    <property name="override" type="String">level 2</property>
-    <property name="size" type="Integer">100</property>
-    <property name="wrong" type="String">wrong type</property>
+    <property name="OVER" type="String" value="level 2"/>
+    <property name="be" type="String" value="happy at comp 1"/>
+    <property name="good-bye" type="String" value="hello property"/>
+    <property name="hello" type="String" value="hello property"/>
+    <property name="hello-2" type="Float" value="2.5"/>
+    <property name="hello-string" type="String" value="world"/>
+    <property name="override" type="String" value="level 2"/>
+    <property name="size" type="Integer" value="100"/>
+    <property name="wrong" type="String" value="wrong type"/>
     <properties entry="OSGI-INF/hello.properties"/>
     <properties entry="brand/system.properties"/>
     <reference name="java.lang.CharSequence/*" interface="java.lang.CharSequence" bind="bind" unbind="unbind"/>
